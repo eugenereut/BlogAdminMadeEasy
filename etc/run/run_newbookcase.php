@@ -7,7 +7,7 @@ class Run_Newbookcase extends Run
 	}
 
 	function action_index() {
-		$data = $this->bin->get_data();
+		$data = $this->bin->get_data($_id = NULL);
 		$title = $this->bin->get_title();
 
 		$this->view->generate('newbookcase_view.php', 'template_view.php', $data, $title);

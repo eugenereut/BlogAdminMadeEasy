@@ -1,8 +1,8 @@
 <?php
-class Run_Main extends Run
+class Run_Writing extends Run
 {
 	function __construct() {
-		$this->bin = new Bin_Main();
+		$this->bin = new Bin_Writing();
 		$this->view = new View();
 	}
 
@@ -10,6 +10,6 @@ class Run_Main extends Run
 		$data = $this->bin->get_data($_id = NULL);
 		$title = $this->bin->get_title();
 
-		$this->view->generate('main_view.php', 'template_view.php', $data, $title);
+		$this->view->generate('writing_view.php', 'template_view.php', $data, $title);
 	}
 }

@@ -9,7 +9,7 @@
 */
 class Bin_Writing extends Bin
 {
-	function get_data() {
+	function get_data($_id = NULL) {
 	}
 
 	function get_title() {

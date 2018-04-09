@@ -26,7 +26,7 @@
 	<a href=""><span>именной</span></a>
 	<a href=""><span>географический</span></a -->
 	<br>
-	<a href="/newtext"><span>add text</span></a>
+	<a href="/writing"><span>add text</span></a>
 	<a href="/newbookcase"><span>add bookcases</span></a>
 	</nav>
 	<ul class="social">
