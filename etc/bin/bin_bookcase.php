@@ -10,18 +10,20 @@
 class Bin_Bookcase extends Bin
 {
 
-	public $_dbc;
+	public $_dba;
 
 	function __construct() {
-		$this->_dbc = $this->db_access();
+		$this->_dba = $this->db_access();
 	}
 
 
-	function get_data() {
+	function get_data($_idbc = NULL) {
 	}
 
 	function get_title() {
-		return array('title' => 'Тексты и Книги · Священник Яков Кротов');
+		$_menu =$this->get_left_menu();
+		$_title = array('title' => 'Тексты и Книги · Священник Яков Кротов');
+		return array_merge($_title, $_menu);
 	}
 
 }
