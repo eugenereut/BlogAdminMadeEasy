@@ -99,6 +99,11 @@ section div.postbody p{font-family: 'Playfair Display', serif; font-size:16px;}
 section header{width:30%;margin-right:40px}
 section div.postbody{width:70%}}
 
+section div.formpostbody {font-family: 'Playfair Display', serif; font-size:16px;}
+@media(min-width:900px){section{display:flex;padding-bottom:40px}
+section div.formpostbody{width:100%}}
+
+
 @media(min-width:900px){section.third>div:first-child{width:33.3333%;margin-right:40px}section.third>div:last-child{width:66.6666%}}
 
 div.pagination{margin-top:-20px;text-align:center}
@@ -147,6 +152,8 @@ div.newbookcases select{background-color:transparent;border:0;padding:0 0 10px; 
 div.newbookcases select:focus{outline:0;}
 div.newbookcases div.deletewrap{display:flex;background-color:#edf0f3;padding:0px 30px 30px}
 div.newbookcases div.deletewrap label{width:100%;color:#1e90ff;margin-right:20px}
+
+fieldset.newpostarea{padding-bottom:20px;margin-bottom:40px;border-bottom:1px solid rgba(0,0,0,.1)}
 
 div.listbookcases {display:flex;background-color:#edf0f3; padding:30px 30px 30px}
 ul.shelvenav{margin-bottom:20px;margin-top:-10px}
