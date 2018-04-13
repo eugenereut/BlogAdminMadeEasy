@@ -7,8 +7,9 @@ class Run_Bookcase extends Run
 	}
 
 	function action_index() {
+		$_idbc = $_GET['idbc'];
 		$data = $this->bin->get_data($_id = NULL);
-		$title = $this->bin->get_title();
+		$title = $this->bin->get_title($_idbc);
 
 		$this->view->generate('bookcase_view.php', 'template_view.php', $data, $title);
 	}

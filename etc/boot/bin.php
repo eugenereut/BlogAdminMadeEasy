@@ -24,7 +24,8 @@ class Bin
 	  return $connection;
 	}
 
-	function get_left_menu() {
+	# get id bookcase in run_main
+	function get_left_menu($_id = null) {
 		$_i = 0; $_arr = array();
 
 		$statement = $this->_dba->query('SELECT idbc, namebookcase FROM bookcase');
@@ -32,7 +33,11 @@ class Bin
 		foreach($data as $row) {
       $_idbc = $row['idbc'];
       $_NameBC = $row['namebookcase'];
-      $_menustr = '<a href="/bookcase?idbc='.$_idbc.'"><span>' . $_NameBC . '</span></a>';
+			if ($_idbc == $_id) {
+				$_menustr = '<a href="/bookcase?idbc='.$_idbc.'" class="active"><span>' . $_NameBC . '</span></a>';
+			} else {
+				$_menustr = '<a href="/bookcase?idbc='.$_idbc.'"><span>' . $_NameBC . '</span></a>';
+			}
 
 			$_arr[$_i] = array('menustr' => $_menustr);
  			$_i++;

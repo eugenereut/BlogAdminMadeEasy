@@ -1238,7 +1238,7 @@ function widgToolbarAction()
 			break;
 
 		case "image":
-			var theImage = prompt("Enter the location for this image:", "");
+			var theImage = prompt("Enter the location for this image:", "/opt/img/");
 
 			if (theImage != null && theImage != "")
 			{
@@ -1255,7 +1255,7 @@ function widgToolbarAction()
 					theSelection = theIframe.contentWindow.document.selection;
 					theRange = theSelection.createRange();
 					theRange.collapse(false);
-					theRange.pasteHTML("<img alt=\"" + theAlt + "\" src=\"" + theImage + "\" />");
+					theRange.pasteHTML("<figure><img alt=\"" + theAlt + "\" src=\"" + theImage + "\"></figure>");
 
 					break;
 				}
@@ -1279,7 +1279,12 @@ function widgToolbarAction()
 					theImageNode.src = theImage;
 					theImageNode.alt = theAlt;
 
-					theRange.insertNode(theImageNode);
+					var x = document.createElement("FIGURE");
+    			theRange.insertNode(x);
+					x.appendChild(theImageNode);
+
+					// theRange.insertNode(theImageNode);
+					//console.log(x);
 
 					break;
 				}

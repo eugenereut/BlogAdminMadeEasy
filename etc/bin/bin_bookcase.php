@@ -20,8 +20,8 @@ class Bin_Bookcase extends Bin
 	function get_data($_idbc = NULL) {
 	}
 
-	function get_title() {
-		$_menu =$this->get_left_menu();
+	function get_title($_id) {
+		$_menu =$this->get_left_menu($_id);
 		$_title = array('title' => 'Тексты и Книги · Священник Яков Кротов');
 		return array_merge($_title, $_menu);
 	}

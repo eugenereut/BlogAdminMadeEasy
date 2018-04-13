@@ -23,9 +23,11 @@ p:first-child{margin-top:0}
 blockquote{padding-left:40px;border-left:1px solid rgba(0,0,0,.25)}
 p a,a.parastyle{color:#222;box-shadow:inset 0 -1px 0 #1e90ff}
 p a:hover,a.parastyle:hover{text-decoration:none;color:#1e90ff}
-h1,h2{font-weight:700}time,small{color:rgba(0,0,0,.5)}
+h1,h2{font-weight:700}
+time, small{color:rgba(0,0,0,.5)}
 h3{font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px}
-section h2,section h3{margin:18px 0 0}
+section h2, section h3{margin:18px 0 0}
+
 figcaption{margin:20px 0;font-size:14px;max-width:36rem}
 figcaption a{color:#222;border-bottom:1px solid #1e90ff}
 figcaption a:hover{color:#1e90ff;text-decoration:none}
@@ -102,7 +104,8 @@ section div.postbody{width:70%}}
 section div.formpostbody {font-family: 'Playfair Display', serif; font-size:16px;}
 @media(min-width:900px){section{display:flex;padding-bottom:40px}
 section div.formpostbody{width:100%}}
-
+small.smallbookcase{font-size: 14px; font-weight:700}
+small.smallshelve{font-size: 12px;}
 
 @media(min-width:900px){section.third>div:first-child{width:33.3333%;margin-right:40px}section.third>div:last-child{width:66.6666%}}
 
@@ -153,7 +156,7 @@ div.newbookcases select:focus{outline:0;}
 div.newbookcases div.deletewrap{display:flex;background-color:#edf0f3;padding:0px 30px 30px}
 div.newbookcases div.deletewrap label{width:100%;color:#1e90ff;margin-right:20px}
 
-fieldset.newpostarea{padding-bottom:20px;margin-bottom:40px;border-bottom:1px solid rgba(0,0,0,.1)}
+fieldset.newpostarea{padding-bottom:20px;margin-bottom:40px;border-bottom:1px solid rgba(0,0,0,.1); background-color:#fffce4}
 
 div.listbookcases {display:flex;background-color:#edf0f3; padding:30px 30px 30px}
 ul.shelvenav{margin-bottom:20px;margin-top:-10px}
