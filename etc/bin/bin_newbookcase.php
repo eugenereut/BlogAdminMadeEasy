@@ -37,8 +37,6 @@ class Bin_Newbookcase extends Bin
 			try {
 				$this->_dba->beginTransaction();
 
-				//$this->_dba->exec("CREATE TABLE bookcase (idbc INTEGER PRIMARY KEY AUTOINCREMENT, namebookcase TEXT, aboutbookcase TEXT)");
-
 				$_stmt = $this->_dba->prepare('INSERT INTO bookcase (namebookcase, aboutbookcase) VALUES (?, ?)');
 				$_stmt->execute(array($_bookcase, $_aboutbookcase));
 
@@ -108,7 +106,6 @@ class Bin_Newbookcase extends Bin
 		if (!empty($_shelve) and !empty($_idbookcase)) {
 			try {
 				$this->_dba->beginTransaction();
-				// $this->_dba->exec("CREATE TABLE shelves (idsh INTEGER PRIMARY KEY AUTOINCREMENT, idbc INTEGER, nameshelve TEXT)");
 
 				$_stmt = $this->_dba->prepare('INSERT INTO shelves (idbc, nameshelve) VALUES (?, ?)');
 				$_stmt->execute(array($_idbookcase, $_shelve));

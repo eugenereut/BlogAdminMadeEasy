@@ -1,24 +1,48 @@
+CREATE TABLE bookcase (
+  idbc INTEGER PRIMARY KEY AUTOINCREMENT,
+  namebookcase TEXT,
+  aboutbookcase TEXT
+);
 
-
-PRAGMA foreign_keys=off;
-
-BEGIN TRANSACTION;
-
-ALTER TABLE employees RENAME TO _employees_old;
-
-CREATE TABLE employees
-( employee_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  last_name VARCHAR NOT NULL,
-  first_name VARCHAR,
-  department_id INTEGER,
-  CONSTRAINT fk_departments
-    FOREIGN KEY (department_id)
-    REFERENCES departments(department_id)
+CREATE TABLE shelves
+(
+  idsh INTEGER PRIMARY KEY AUTOINCREMENT,
+  nameshelve TEXT,
+  idbc INTEGER,
+  CONSTRAINT fk_bookcase
+    FOREIGN KEY (idbc)
+    REFERENCES bookcase(idbc)
     ON DELETE CASCADE
 );
 
-INSERT INTO employees SELECT * FROM _employees_old;
+CREATE TABLE postcase
+(
+  idpt INTEGER PRIMARY KEY AUTOINCREMENT,
+  datepost date,
+  filepath TEXT,
+  postname TEXT
+);
 
-COMMIT;
+CREATE TABLE postonshelve
+(
+  postonshelve_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  datepost date,
+  idpt INTEGER,
+  idsh INTEGER,
+  CONSTRAINT fk_shelves
+    FOREIGN KEY (idsh)
+    REFERENCES shelves(idsh)
+    ON DELETE CASCADE
+);
 
-PRAGMA foreign_keys=on;
+CREATE TABLE postinbookcase
+(
+  postinbookcase_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  datepost date,
+  idpt INTEGER,
+  idbc INTEGER,
+  CONSTRAINT fk_bookcase
+    FOREIGN KEY (idbc)
+    REFERENCES bookcase(idbc)
+    ON DELETE CASCADE
+);

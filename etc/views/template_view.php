@@ -37,7 +37,7 @@
 	<a href=""><span>географический</span></a -->
 	<br>
 	<a href="/writing"><span>add post</span></a>
-	<a href="/writing"><span>all posts</span></a>
+	<a href="/allposts"><span>all posts</span></a>
 	<a href="/newbookcase"><span>add bookcase</span></a>
 	</nav>
 	<ul class="social">

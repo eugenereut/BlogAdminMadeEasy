@@ -87,7 +87,7 @@
 </header>
 <section>
 <header>
-<h1><?php if (!empty($data['PostName'])) {echo $data['PostName'];} ?></a></h1>
+<h1><?php if (!empty($data['PostName'])) {echo $data['PostName'];} ?></h1>
 <time><?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?></time><br><br>
 <div id="attachedbookcases"></div>
 </header>
@@ -97,7 +97,7 @@
     foreach ($data['bookcase'] as $value) {
       echo '<section class="third">
       <div>
-			<h2><input type="checkbox" id="bcid'.$value['Record'].'" value="" onchange="bookcase_chechbox(this.id)">' . $value['NameBookcase'] . '</h2>
+			<h2><input type="checkbox" id="bcid'.$value['Record'].'" value="" onchange="bookcase_chechbox(this.id)" ' . $value['Checked'] . '>' . $value['NameBookcase'] . '</h2>
       <br>' . $value['AboutBC'] . '</div>
       <div class="listbookcases"><ul class="shelvenav">' . $value['Shelve'] . '</ul></div>
       </section>';

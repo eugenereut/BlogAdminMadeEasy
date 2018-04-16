@@ -40,8 +40,13 @@ class Bin_Writing extends Bin
 				# if true, make DB query
 				if ($this->makepost($_filename, $_bodypost)) {
 					$_idquery = $this->make_newpost_dbaquery($_datefrom, $_filename, $_headerpost);
+
 					# redirection to the setup page
-					$this->setup_newpost_intobookcase($_idquery);
+					if ($_idquery['error']) {
+						$message = $_idquery['error'];
+					} else {
+						$this->setup_newpost_intobookcase($_idquery['result']);
+					}
 				} else {
 					$message = 'New post not added, cant write to the new file.';
 				}
@@ -59,19 +64,17 @@ class Bin_Writing extends Bin
 			try {
 				$this->_dba->beginTransaction();
 
-				// $this->_dba->exec("CREATE TABLE postcase (idpt INTEGER PRIMARY KEY AUTOINCREMENT, datepost date, filepath TEXT, postname TEXT)");
-
 				$_stmt = $this->_dba->prepare('INSERT INTO postcase (datepost, filepath, postname) VALUES (?, ?, ?)');
 				$_stmt->execute(array($_datefrom, $_filename, $_headerpost));
 
-				$message = $this->_dba->lastInsertId();
+				$message = array('error' => null, 'result' => $this->_dba->lastInsertId());
 
 				# commit the transaction
 				$this->_dba->commit();
 
 			} catch (PDOException $e) {
 				$this->_dba->rollBack();
-				$message = 'Post not added, some error exception happened. ' . $e->getMessage();
+				$message = array('error' => 'Post not added, some error exception happened. ' . $e->getMessage(), 'result' => null);
 			}
 
 		return $message;

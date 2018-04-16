@@ -43,16 +43,17 @@ class Bin_Setuppost extends Bin
 			die($echorespond);
 		}
 
+		# this cookie needs when post goes to bookcase or on shelves, see Run_Setuppost controller
 		$cookie_name = 'idpost';
 		$cookie_value = $_idpost;
 		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
 
 		if(!isset($_COOKIE['idpost'])) {
     	$message = array('houston' => 'Cookie is not set! Please allow cookies in browser settings.');
-			$content = array_merge($message, $this->get_bookcases());
+			$content = array_merge($message, $this->get_bookcases($_idpost));
 		} else {
 			$content = $this->get_post($_idpost);
-			$content = array_merge($content, $this->get_bookcases());
+			$content = array_merge($content, $this->get_bookcases($_idpost));
 		}
 
 		return $content; //array_merge($content, $message);
@@ -64,6 +65,11 @@ class Bin_Setuppost extends Bin
 		$stmt->execute([':idpt' => $_idpt]);
 		$row_postcase = $stmt->fetch(PDO::FETCH_ASSOC);
 
+		# this cookie needs when post goes to bookcase or on shelves
+		$cookie_name = 'datepost';
+		$cookie_value = $row_postcase['datepost'];
+		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+
 		$monthes = array(1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь', 7 => 'Июль',
 							8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь');
 
@@ -73,22 +79,41 @@ class Bin_Setuppost extends Bin
 
 		$postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
 		$postname = $row_postcase['postname'];
-		//$postbody = file_get_contents($row_postcase['filepath']);
 
 		return array('PostDate' => $postdate, 'PostName' => $postname);
 	}
 
 	private function addpost_tobcs($_idbc,  $_idpost) {
-		if ($_idpost != 0) {
+		if (isset($_COOKIE['datepost'])) {
+			$_datepost = $_COOKIE['datepost'];
+		} else {
+			$_datepost = 0;
+		}
+
+		if ($_idpost != 0 and $_datepost != 0) {
 			$_idbc = ltrim($_idbc, "bcid");
-			//echo "string " . $_idbc;
-			$statement = $this->_dba->query('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
-			$statement->execute([':idbc' => $_idbc]);
-			$row_bookcase = $statement->fetch(PDO::FETCH_ASSOC);
 
-			$_namebookcase = '<div id="addedbcid' . $_idbc . '"><small class="smallbookcase">' . $row_bookcase['namebookcase'] . '</small></div>';
+			try {
+				$this->_dba->beginTransaction();
 
-			$echorespond = '[' . "'" . $_namebookcase  . "'" . ']';
+				$_stmt = $this->_dba->prepare('INSERT INTO postinbookcase (datepost, idpt, idbc) VALUES (?, ?, ?)');
+				$_stmt->execute(array($_datepost, $_idpost, $_idbc));
+
+				# commit the transaction
+				$this->_dba->commit();
+
+				$statement = $this->_dba->query('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
+				$statement->execute([':idbc' => $_idbc]);
+				$row_bookcase = $statement->fetch(PDO::FETCH_ASSOC);
+
+				$_namebookcase = '<div id="addedbcid' . $_idbc . '"><small class="smallbookcase">' . $row_bookcase['namebookcase'] . '</small></div>';
+
+				$echorespond = '[' . "'" . $_namebookcase  . "'" . ']';
+
+			} catch (PDOException $e) {
+				$this->_dba->rollBack();
+				$echorespond = null;
+			}
 		} else {
 			$echorespond = null;
 		}
@@ -99,12 +124,21 @@ class Bin_Setuppost extends Bin
 	private function deletepost_frombcs($_idbc,  $_idpost) {
 		if ($_idpost != 0) {
 			$_idbc = ltrim($_idbc, "bcid");
-			//$statement = $this->_dba->query('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
-			//$statement->execute([':idbc' => $_idbc]);
-			//$row_bookcase = $statement->fetch(PDO::FETCH_ASSOC);
+			try {
+				$this->_dba->beginTransaction();
 
-			$_idbc = 'addedbcid' . $_idbc;
-			$echorespond = '['  . "'" . $_idbc  . "'" . ']';
+				$statement = $this->_dba->query('DELETE FROM postinbookcase WHERE idpt = :idpt  AND idbc = :idbc');
+				$statement->execute(array(':idpt' => $_idpost, ':idbc' => $_idbc));
+
+				# commit the transaction
+				$this->_dba->commit();
+
+				$_idbc = 'addedbcid' . $_idbc;
+				$echorespond = '['  . "'" . $_idbc  . "'" . ']';
+			} catch (PDOException $e) {
+				$this->_dba->rollBack();
+				$echorespond = null;
+			}
 		} else {
 			$echorespond = null;
 		}
@@ -113,16 +147,36 @@ class Bin_Setuppost extends Bin
 	}
 
 	private function addpost_toshelve($_idshlv,  $_idpost) {
-		if ($_idpost != 0) {
+		if (isset($_COOKIE['datepost'])) {
+			$_datepost = $_COOKIE['datepost'];
+		} else {
+			$_datepost = 0;
+		}
+
+		if ($_idpost != 0 and $_datepost != 0) {
 			$_idshlv = ltrim($_idshlv, "shlvid");
 
-			$statement = $this->_dba->prepare('SELECT nameshelve FROM shelves WHERE idsh = :idshlv');
-			$statement->execute([':idshlv' => $_idshlv]);
-			$row_shelve = $statement->fetch(PDO::FETCH_ASSOC);
+			try {
+				$this->_dba->beginTransaction();
 
-			$_nameshelve = '<div id="addedshlvid' . $_idshlv . '"><small class="smallshelve">' . $row_shelve['nameshelve'] . '</small></div>';
-			// $_idbc = 'bcid' . $_idbc;
-			$echorespond = '[' . "'" . $_nameshelve  . "'" . ']';
+				$_stmt = $this->_dba->prepare('INSERT INTO postonshelve (datepost, idpt, idsh) VALUES (?, ?, ?)');
+				$_stmt->execute(array($_datepost, $_idpost, $_idshlv));
+
+				# commit the transaction
+				$this->_dba->commit();
+
+				$statement = $this->_dba->prepare('SELECT nameshelve FROM shelves WHERE idsh = :idshlv');
+				$statement->execute([':idshlv' => $_idshlv]);
+				$row_shelve = $statement->fetch(PDO::FETCH_ASSOC);
+
+				$_nameshelve = '<div id="addedshlvid' . $_idshlv . '"><small class="smallshelve">' . $row_shelve['nameshelve'] . '</small></div>';
+				// $_idbc = 'bcid' . $_idbc;
+				$echorespond = '[' . "'" . $_nameshelve  . "'" . ']';
+
+			} catch (PDOException $e) {
+				$this->_dba->rollBack();
+				$echorespond = null;
+			}
 		} else {
 			$echorespond = null;
 		}
@@ -133,12 +187,22 @@ class Bin_Setuppost extends Bin
 	private function deletepost_fromshelve($_idshlv,  $_idpost) {
 		if ($_idpost != 0) {
 			$_idshlv = ltrim($_idshlv, "shlvid");
-			//$statement = $this->_dba->query('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
-			//$statement->execute([':idbc' => $_idbc]);
-			//$row_bookcase = $statement->fetch(PDO::FETCH_ASSOC);
 
-			$_idshlv = 'addedshlvid' . $_idshlv;
-			$echorespond = '['  . "'" . $_idshlv  . "'" . ']';
+			try {
+				$this->_dba->beginTransaction();
+
+				$statement = $this->_dba->query('DELETE FROM postonshelve WHERE idpt = :idpt  AND idsh = :idsh');
+				$statement->execute(array(':idpt' => $_idpost, ':idsh' => $_idshlv));
+
+				# commit the transaction
+				$this->_dba->commit();
+
+				$_idshlv = 'addedshlvid' . $_idshlv;
+				$echorespond = '['  . "'" . $_idshlv  . "'" . ']';
+			} catch (PDOException $e) {
+				$this->_dba->rollBack();
+				$echorespond = null;
+			}
 		} else {
 			$echorespond = null;
 		}
@@ -147,29 +211,47 @@ class Bin_Setuppost extends Bin
 	}
 
 	# get Bookcases and Shelves
-	private function get_bookcases() {
+	private function get_bookcases($_idpost) {
 		$arr_bookcase = array(); $i = 0;
 
 		$statement = $this->_dba->query('SELECT idbc, namebookcase, aboutbookcase FROM bookcase');
 
 		while($row_bookcase = $statement->fetch(PDO::FETCH_ASSOC)) {
-			$_shelve = $this->get_shelves($row_bookcase['idbc']);
+			$_shelve = $this->get_shelves($_idpost, $row_bookcase['idbc']);
 
-			$arr_bookcase[$i] = array('Record' => $row_bookcase['idbc'], 'NameBookcase' => $row_bookcase['namebookcase'], 'AboutBC' => $row_bookcase['aboutbookcase'], 'Shelve' => $_shelve);
+			$stmt = $this->_dba->prepare('SELECT idpt, idbc FROM postinbookcase WHERE idpt = :idpt AND idbc = :idbc');
+			$stmt->execute(array(':idpt' => $_idpost, ':idbc' => $row_bookcase['idbc']));
+
+			if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+				$_checked  = 'checked';
+			} else {
+				$_checked  = null;
+			}
+
+			$arr_bookcase[$i] = array('Record' => $row_bookcase['idbc'], 'Checked' => $_checked, 'NameBookcase' => $row_bookcase['namebookcase'], 'AboutBC' => $row_bookcase['aboutbookcase'], 'Shelve' => $_shelve);
 			$i++;
 		}
 
 		return array('bookcase' => $arr_bookcase);
 	}
 
-	private function get_shelves($_idbc) {
+	private function get_shelves($_idpost, $_idbc) {
 		$str_shelves = null; $i = 0;
 
 		$statement = $this->_dba->prepare('SELECT idsh, nameshelve FROM shelves WHERE idbc = :idbc');
 		$statement->execute([':idbc' => $_idbc]);
 
 		while($row_shelve = $statement->fetch(PDO::FETCH_ASSOC)) {
-			$str_shelves  .= '<li><input type="checkbox" id="shlvid' . $row_shelve['idsh'].'" onchange="shelve_chechbox(this.id)">' . $row_shelve['nameshelve'] . '</li>';
+			$stmt = $this->_dba->prepare('SELECT idpt, idsh FROM postonshelve WHERE idpt = :idpt AND idsh = :idsh');
+			$stmt->execute(array(':idpt' => $_idpost, ':idsh' => $row_shelve['idsh']));
+
+			if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+				$_checked  = 'checked';
+			} else {
+				$_checked  = null;
+			}
+
+			$str_shelves  .= '<li><input type="checkbox" id="shlvid' . $row_shelve['idsh'].'" onchange="shelve_chechbox(this.id)" ' . $_checked . '>' . $row_shelve['nameshelve'] . '</li>';
 		}
 
 		return $str_shelves;
