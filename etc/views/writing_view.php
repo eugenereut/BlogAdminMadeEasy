@@ -28,7 +28,7 @@
       </textarea>
     </fieldset>
     <fieldset class="submit">
-      <input value="Add new post" name="Addnewpost" type="submit">
+	    <div class="newbookcases"><input value="Add new post" name="Addnewpost" type="submit"></div>
     </fieldset>
 </div>
 </section>

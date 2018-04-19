@@ -1,16 +1,13 @@
 <article>
 <header>
 <h2>Блог</h2>
-<ul class="themas">
-<li><a href="history.html"><h2>История или Прошлое</h2></a></li>
-<li><a href="">Введение в историю</a></li>
-<li><a href="">История Церкви</a></li> / <li><a id="myBtn">все тексты</a></li>
-</ul>
 </header>
 <section>
 <header>
 <h1><?php if (!empty($data['PostName'])) {echo $data['PostName'];} ?></h1>
 <time><?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?></time>
+<br><br>
+<div id="attachedbookcases"><?php if (!empty($data['PostBcSh'])) {echo $data['PostBcSh'];} ?></div>
 </header>
 <div class="postbody">
   <?php if (!empty($data['PostBody'])) {echo $data['PostBody'];} ?>
@@ -18,9 +15,9 @@
 </section>
 <div class="postnav">
 <div>
-<a class="prev" href="">
+<a class="prev" href="/post?idpt=<?php if (!empty($data['NextPost'])) {echo $data['NextPost'][1];} ?>">
 <h3>Следующий пост</h3>
-<span>Время и Пространство: От Крестьянской Архаики До Современности</span>
+<span><?php if (!empty($data['NextPost'])) {echo $data['NextPost'][0];} ?></span>
 </a>
 </div>
 </div>

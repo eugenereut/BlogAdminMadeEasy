@@ -1255,7 +1255,7 @@ function widgToolbarAction()
 					theSelection = theIframe.contentWindow.document.selection;
 					theRange = theSelection.createRange();
 					theRange.collapse(false);
-					theRange.pasteHTML("<figure><img alt=\"" + theAlt + "\" src=\"" + theImage + "\"></figure>");
+					theRange.pasteHTML("<figure><img alt=\"" + theAlt + "\" src=\"" + theImage + "\" class='full'></figure>");
 
 					break;
 				}
@@ -1278,6 +1278,7 @@ function widgToolbarAction()
 
 					theImageNode.src = theImage;
 					theImageNode.alt = theAlt;
+					theImageNode.className = 'full';
 
 					var x = document.createElement("FIGURE");
     			theRange.insertNode(x);

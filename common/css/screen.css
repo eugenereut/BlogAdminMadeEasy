@@ -105,7 +105,9 @@ section div.formpostbody {font-family: 'Playfair Display', serif; font-size:16px
 @media(min-width:900px){section{display:flex;padding-bottom:40px}
 section div.formpostbody{width:100%}}
 small.smallbookcase{font-size: 14px; font-weight:700}
+small.smallbookcase a{color:rgba(0,0,0,.5)}
 small.smallshelve{font-size: 12px;}
+small.smallshelve a{color:rgba(0,0,0,.5)}
 
 @media(min-width:900px){section.third>div:first-child{width:33.3333%;margin-right:40px}section.third>div:last-child{width:66.6666%}}
 
@@ -147,8 +149,7 @@ div.newbookcases div.inputwrap{display:flex;background-color:#edf0f3;padding:56p
 div.newbookcases input[type=text]{background-color:transparent;border:0;padding:0 0 10px;border-bottom:1px solid rgba(0,0,0,.25);
   font-family:fakt,Helvetica,Arial,sans-serif;font-size:17px;width:100%;color:#1e90ff;margin-right:20px}
 div.newbookcases input[type=text]:focus{outline:0;border-bottom:1px solid #1e90ff}
-div.newbookcases input[type=submit]{-webkit-appearance:none;display:block;background-color:#1e90ff;border:0;color:#fff;border-radius:3px;padding:5px 10px 2px;
-  font-family:fakt,Helvetica,Arial,sans-serif;font-size:14px}
+div.newbookcases input[type=submit]{-webkit-appearance:none;display:block;background-color:#1e90ff;border:0;color:#fff;border-radius:3px;padding:5px 10px 2px;font-family:fakt,Helvetica,Arial,sans-serif;font-size:14px}
 div.newbookcases input[type=submit]:active{position:relative;top:2px}
 div.newbookcases div.selectwrap{display:flex;background-color:#edf0f3;padding:56px 30px 0px}
 div.newbookcases select{background-color:transparent;border:0;padding:0 0 10px; font-family:fakt,Helvetica,Arial,sans-serif;font-size:17px;width:100%;color:#1e90ff;margin-right:20px}

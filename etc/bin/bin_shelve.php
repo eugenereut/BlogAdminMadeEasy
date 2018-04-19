@@ -7,7 +7,7 @@
 * on emails.
 *
 */
-class Bin_Bookcase extends Bin
+class Bin_Shelve extends Bin
 {
 
 	public $_dba;
@@ -17,44 +17,39 @@ class Bin_Bookcase extends Bin
 	}
 
 	# Model show all posts added only to bookcase, if no post there then get posts from shelves
-	function get_data($_idbc = NULL) {
-		# this cookie needs for left menu
-		$cookie_name = 'idbc';
-		$cookie_value = $_idbc;
-		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-
-		$_topshelves_menu = $this->get_topshelves_menu($_idbc, $_idsh = null);
-		$_postinbookcase = $this->get_postinbookcase($_idbc);
-		return array_merge($_topshelves_menu, $_postinbookcase);
+	function get_data($_idsh = NULL) {
+		$_topshelves_menu = $this->get_topshelves_menu($_idbc = null, $_idsh);
+		$_postonshelve = $this->get_postonshelve($_idsh);
+		return array_merge($_topshelves_menu, $_postonshelve);
 	}
 
-	private function get_postinbookcase($_idbc) {
+	private function get_postonshelve($_idsh) {
 		$arr_posts = array(); $_all_posts = array(); $i = 0;
 
-		$_stmt = $this->_dba->prepare('SELECT idpt FROM postinbookcase WHERE idbc = :idbc ORDER BY datepost DESC');
-		$_stmt->execute([':idbc' => $_idbc]);
+		$_stmt = $this->_dba->prepare('SELECT idpt FROM postonshelve WHERE idsh = :idsh ORDER BY datepost DESC');
+		$_stmt->execute([':idsh' => $_idsh]);
 
-		while($_bookcase = $_stmt->fetch(PDO::FETCH_ASSOC)) {
-			$_posts = $this->get_posts($_bookcase['idpt']);
+		while($_shelve = $_stmt->fetch(PDO::FETCH_ASSOC)) {
+			$_posts = $this->get_posts($_shelve['idpt']);
 
-			$_bc_names = $this->get_addedname_bookcases($_bookcase['idpt']);
-			$_sh_names = $this->get_addedname_shelves($_bookcase['idpt']);
+			$_bc_names = $this->get_addedname_bookcases($_shelve['idpt']);
+			$_sh_names = $this->get_addedname_shelves($_shelve['idpt']);
 			$_sort_eachother = $this->sortshelves_tobookcases($_bc_names, $_sh_names);
 
-			$arr_posts[$i] = array('PostID' => $_bookcase['idpt'], 'PostDate' => $_posts[0], 'PostName' => $_posts[1], 'PostBody' => $_posts[2], 'PostBcSh' => $_sort_eachother);
+			$arr_posts[$i] = array('PostID' => $_shelve['idpt'], 'PostDate' => $_posts[0], 'PostName' => $_posts[1], 'PostBody' => $_posts[2], 'PostBcSh' => $_sort_eachother);
 			# this array for the right modal window where all posts names
-			$_all_posts[$i] = array('PostID' => $_bookcase['idpt'], 'PostName' => $_posts[1]);
+			$_all_posts[$i] = array('PostID' => $_shelve['idpt'], 'PostName' => $_posts[1]);
 
 			$i++;
 		}
 
-		$_bcstmt = $this->_dba->prepare('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
-		$_bcstmt->execute([':idbc' => $_idbc]);
+		$_shstmt = $this->_dba->prepare('SELECT nameshelve FROM shelves WHERE idsh = :idsh');
+		$_shstmt->execute([':idsh' => $_idsh]);
 
-		$_nbc = $_bcstmt->fetch(PDO::FETCH_ASSOC);
-		$_nbc = $_nbc['namebookcase'];
+		$_nsh = $_shstmt->fetch(PDO::FETCH_ASSOC);
+		$_nsh = $_nsh['nameshelve'];
 
-		return array('Posts' => $arr_posts, 'All_inmodal_window' => $_all_posts, 'BookcaseName' => $_nbc);
+		return array('Posts' => $arr_posts, 'All_inmodal_window' => $_all_posts, 'ShelveName' => $_nsh);
 	}
 
 	private function get_posts($_idpt) {
@@ -161,12 +156,12 @@ class Bin_Bookcase extends Bin
 		return $_str;
 	}
 
-	private function cut_shelves($_idbc, $_sh_names) {
+	private function cut_shelves($_idsh, $_sh_names) {
 		$_str = null; $i = 0;
 
 		if (!empty($_sh_names)) {
 			foreach ($_sh_names['NameShelves'] as $key => $value) {
-				if($value['IdBC'] == $_idbc) {
+				if($value['IdBC'] == $_idsh) {
 					$_str .= $value['StrSH'];
 					# if was any bookcase then shelve can repeats twice
 					unset($_sh_names['NameShelves'][$key]);
@@ -177,8 +172,15 @@ class Bin_Bookcase extends Bin
 		return array($_str, $_sh_names);
 	}
 
-	function get_title($_id) {
-		$_menu =$this->get_left_menu($_id);
+	function get_title($_idsh) {
+		$_shstmt = $this->_dba->prepare('SELECT idbc FROM shelves WHERE idsh = :idsh');
+		$_shstmt->execute([':idsh' => $_idsh]);
+
+		$_idbc = $_shstmt->fetch(PDO::FETCH_ASSOC);
+		$_idbc = $_idbc['idbc'];
+
+
+		$_menu =$this->get_left_menu($_idbc);
 		$_title = array('title' => 'Тексты и Книги · Священник Яков Кротов');
 		return array_merge($_title, $_menu);
 	}

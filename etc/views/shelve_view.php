@@ -9,7 +9,7 @@ if (!empty($data['ShelvesMenu'])) {
   echo '<li> | <a id="myBtn">все тексты</a></li></ul>';
 }
 
-if (!empty($data['Aboutbookcase'])) {echo "<em>" . $data['Aboutbookcase'] . "</em>";}
+if (!empty($data['Aboutbookcase'])) {echo "<em>" . $data['Aboutbookcase'] ."</em>";}
 ?>
 </header>
 <?php
@@ -41,7 +41,7 @@ if (!empty($data['Posts'])) {
   <!-- Modal content -->
   <div class="modal-content">
   <span class="close">&times;</span>
-    <h2><?php if (!empty($data['BookcaseName'])){echo $data['BookcaseName'];}?> · Все тексты</h2>
+    <h2><?php if (!empty($data['ShelveName'])){echo $data['ShelveName'];}?> · Все тексты</h2>
     <?php
     if (!empty($data['All_inmodal_window'])) {
       foreach ($data['All_inmodal_window'] as $value) {

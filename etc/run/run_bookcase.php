@@ -8,6 +8,7 @@ class Run_Bookcase extends Run
 
 	function action_index() {
 		$_idbc = $_GET['idbc'];
+
 		$data = $this->bin->get_data($_idbc);
 		$title = $this->bin->get_title($_idbc);
 

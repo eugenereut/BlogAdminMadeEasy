@@ -43,7 +43,7 @@ class Bin_Setuppost extends Bin
 			die($echorespond);
 		}
 
-		# this cookie needs when post goes to bookcase or on shelves, see Run_Setuppost controller
+		# this cookie needs for JavaScript, see Setuppost_view, when post goes to bookcase or on shelves, see Run_Setuppost controller
 		$cookie_name = 'idpost';
 		$cookie_value = $_idpost;
 		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
@@ -77,12 +77,99 @@ class Bin_Setuppost extends Bin
 		$_mnth = abs(date('m', strtotime($row_postcase['datepost'])));
 		$_day = date('d', strtotime($row_postcase['datepost']));
 
-		$postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
-		$postname = $row_postcase['postname'];
+		$_postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
+		$_bc_names = $this->get_addedname_bookcases($_idpt);
+		$_sh_names = $this->get_addedname_shelves($_idpt);
+		$_sort_eachother = $this->sortshelves_tobookcases($_bc_names, $_sh_names);
 
-		return array('PostDate' => $postdate, 'PostName' => $postname);
+		return array('PostDate' => $_postdate, 'PostName' => $row_postcase['postname'], 'PostBcSh' => $_sort_eachother);
 	}
 
+	# this functions get added names bookcases and shelves under post name and date
+	private function get_addedname_bookcases($_idpt) {
+		$_str = array(); $i = 0;
+
+		$stmt = $this->_dba->prepare('SELECT idbc FROM postinbookcase WHERE idpt = :idpt');
+		$stmt->execute([':idpt' => $_idpt]);
+
+		while($row_stmt = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+			$_bcstmt = $this->_dba->prepare('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
+			$_bcstmt->execute([':idbc' => $row_stmt['idbc']]);
+			$row_bookcase = $_bcstmt->fetch(PDO::FETCH_ASSOC);
+
+			$_str[$i] = array('IdBC' =>  $row_stmt['idbc'], 'StrBC' => '<div id="addedbcid' . $row_stmt['idbc'] . '"><small class="smallbookcase">' . $row_bookcase['namebookcase'] . '</small></div>');
+			++$i;
+		}
+
+		return array('NameBookcase' => $_str);
+	}
+
+	private function get_addedname_shelves($_idpt) {
+		$_str = array(); $i = 0;
+
+		$stmt = $this->_dba->prepare('SELECT idsh FROM postonshelve WHERE idpt = :idpt');
+		$stmt->execute([':idpt' => $_idpt]);
+
+		while($row_stmt = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+			$_shstmt = $this->_dba->prepare('SELECT nameshelve, idbc FROM shelves WHERE idsh = :idsh');
+			$_shstmt->execute([':idsh' => $row_stmt['idsh']]);
+			$row_shelve = $_shstmt->fetch(PDO::FETCH_ASSOC);
+
+			$_str[$i] = array('IdBC' =>  $row_shelve['idbc'], 'StrSH' => '<div id="addedshlvid' . $row_stmt['idsh'] . '"><small class="smallshelve">' . $row_shelve['nameshelve'] . '</small></div>');
+			++$i;
+		}
+
+		return array('NameShelves' => $_str);
+	}
+
+	private function sortshelves_tobookcases($_bc_names, $_sh_names) {
+		$_str = null;
+		if (!empty($_bc_names['NameBookcase'])) {
+	    foreach ($_bc_names['NameBookcase'] as $value) {
+				$_str .= $value['StrBC'];
+				# cut shelves if idbc from postinbookcase == idbc in shelves
+				$_strsh = $this->cut_shelves($value['IdBC'], $_sh_names);
+				$_str .= $_strsh[0];
+				$_sh_names = $_strsh[1];
+	    }
+
+			if (!empty($_sh_names['NameShelves'])) {
+				$_str .= '.';
+				foreach ($_sh_names['NameShelves'] as $value) {
+						$_str .= $value['StrSH'];
+				}
+		  }
+	  } else {
+			if (!empty($_sh_names['NameShelves'])) {
+				foreach ($_sh_names['NameShelves'] as $value) {
+						$_str .= $value['StrSH'];
+				}
+		  }
+		}
+
+		return $_str;
+	}
+
+	private function cut_shelves($_idbc, $_sh_names) {
+		$_str = null; $i = 0;
+
+		if (!empty($_sh_names)) {
+			foreach ($_sh_names['NameShelves'] as $key => $value) {
+				if($value['IdBC'] == $_idbc) {
+					$_str .= $value['StrSH'];
+					# if was any bookcase then shelve can repeats twice
+					unset($_sh_names['NameShelves'][$key]);
+				}
+			}
+	  }
+
+		return array($_str, $_sh_names);
+	}
+
+
+	# this functions calls from JavaScript
 	private function addpost_tobcs($_idbc,  $_idpost) {
 		if (isset($_COOKIE['datepost'])) {
 			$_datepost = $_COOKIE['datepost'];
@@ -229,7 +316,7 @@ class Bin_Setuppost extends Bin
 			}
 
 			$arr_bookcase[$i] = array('Record' => $row_bookcase['idbc'], 'Checked' => $_checked, 'NameBookcase' => $row_bookcase['namebookcase'], 'AboutBC' => $row_bookcase['aboutbookcase'], 'Shelve' => $_shelve);
-			$i++;
+			++$i;
 		}
 
 		return array('bookcase' => $arr_bookcase);

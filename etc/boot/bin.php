@@ -46,4 +46,40 @@ class Bin
  	 	return array('leftmenu' => $_arr);
 	}
 
+	# functions get the top shelves menu
+	function get_topshelves_menu($_idbc, $_idsh) {
+		$_str = array(); $i = 0; $_strbc = null;
+
+		if ($_idsh) {
+			$_shstmt = $this->_dba->prepare('SELECT idbc FROM shelves WHERE idsh = :idsh');
+			$_shstmt->execute([':idsh' => $_idsh]);
+
+			$_idbc = $_shstmt->fetch(PDO::FETCH_ASSOC);
+			$_idbc = $_idbc['idbc'];
+		} else {
+			$_idbc = $_idbc;
+		}
+
+		$_shstmt = $this->_dba->prepare('SELECT idsh, nameshelve FROM shelves WHERE idbc = :idbc');
+		$_shstmt->execute([':idbc' => $_idbc]);
+
+		while($row_shelve = $_shstmt->fetch(PDO::FETCH_ASSOC)) {
+			if ($row_shelve['idsh'] == $_idsh) {
+				$_str[$i] = array('SrtSh' =>  '<li><a href="/shelve?idsh='.$row_shelve['idsh'].'" class="title parastyle"><span>' . $row_shelve['nameshelve'] . '</span></a></li>');
+	    } else {
+				$_str[$i] = array('SrtSh' =>  '<li><a href="/shelve?idsh='.$row_shelve['idsh'].'"><span>' . $row_shelve['nameshelve'] . '</span></a></li>');
+	    }
+			++$i;
+		}
+
+		$_stmt = $this->_dba->prepare('SELECT aboutbookcase FROM bookcase WHERE idbc = :idbc');
+		$_stmt->execute([':idbc' => $_idbc]);
+
+		if($row = $_stmt->fetch(PDO::FETCH_ASSOC)) {
+			$_strbc = $row['aboutbookcase'];
+		}
+
+		return array('ShelvesMenu' => $_str, 'Aboutbookcase' => $_strbc);
+	}
+
 }

@@ -36,9 +36,9 @@
 	<a href=""><span>именной</span></a>
 	<a href=""><span>географический</span></a -->
 	<br>
-	<a href="/writing"><span>add post</span></a>
+	<a href="/writing"><span>[+] add post</span></a>
 	<a href="/allposts"><span>all posts</span></a>
-	<a href="/newbookcase"><span>add bookcase</span></a>
+	<a href="/newbookcase"><span>[+] add bookcase</span></a>
 	</nav>
 	<ul class="social">
 	<li><a href=""><img src="/common/images/mail.svg" alt="Email"></a></li>

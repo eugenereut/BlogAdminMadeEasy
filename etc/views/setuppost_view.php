@@ -79,7 +79,7 @@
 </script>
 <article>
 <header>
-<h2>Add Post into Bookcases and Shelves</h2>
+<h2>Add Post into Bookcases and Shelves. Edit or delete post.</h2>
 <?php
   if (!empty($data['houston'])) {
     echo '<p style="color: red">'.$data['houston'].'</p>';
@@ -88,8 +88,15 @@
 <section>
 <header>
 <h1><?php if (!empty($data['PostName'])) {echo $data['PostName'];} ?></h1>
-<time><?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?></time><br><br>
-<div id="attachedbookcases"></div>
+<time><?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?></time>
+<br><br>
+<div id="attachedbookcases"><?php if (!empty($data['PostBcSh'])) {echo $data['PostBcSh'];} ?></div>
+<br><br>
+<div>
+	<p><a href="/post?idpt='. <?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?> . '" class="readmore">Edit</a></p>
+	<p>&mdash;&nbsp;or&nbsp;&mdash;</p>
+	<p><a href="/post?idpt='. <?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?> . '" class="readmore">Delete Post</a></p>
+</div>
 </header>
 <div class="postbody">Bookcases and Shelves<br><br>
   <?php

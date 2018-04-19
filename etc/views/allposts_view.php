@@ -13,13 +13,14 @@
       if ($value['PostDate'] != $_timepost) {
         echo $_section;
         echo '<section class="third"><div>' . $value['PostDate'] . '</div><div class="listbookcases"><ul class="shelvenav">';
+        # this section will close all post in same date
         $_section = '</ul></div></section>';
         $_timepost = $value['PostDate'];
       } else {
         $_timepost = $value['PostDate'];
       }
 
-      echo '<li><a href="/setuppost?idpt='.$value['Record'].'">' . $value['PostName'] . '</a></li>';
+      echo '<li><a href="/setuppost?idpt='.$value['Record'].'">' . $value['PostName'] . '</a></li><br>';
     }
     echo $_section;
   } ?>
