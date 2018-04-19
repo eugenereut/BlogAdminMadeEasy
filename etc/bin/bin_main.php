@@ -15,7 +15,7 @@ class Bin_Main extends Bin
 		$this->_dba = $this->db_access();
 	}
 
-	function get_data($_id = NULL) {
+	function get_data($_id = null, $_listing = null) {
 	}
 
 	function get_title() {

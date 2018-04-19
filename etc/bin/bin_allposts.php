@@ -17,7 +17,7 @@ class Bin_Allposts extends Bin
 	}
 
 
-	function get_data($_idpt = NULL) {
+	function get_data($_idpt = null, $_listing = null) {
 		return $this->get_post();
 	}
 

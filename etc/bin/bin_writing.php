@@ -14,7 +14,7 @@ class Bin_Writing extends Bin
 		$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
-	function get_data($_id = NULL) {
+	function get_data($_id = null, $_listing = null) {
 		if (isset($_POST['Addnewpost'])) {
 			$message = $this->insert_newPost($_POST['Datefrom'], $_POST['Headerpost'], $_POST['Bodypost']);
 		} else {

@@ -17,7 +17,7 @@ class Bin_Setuppost extends Bin
 	}
 
 	//setcookie("idpost", "", time() - 3600); // delete cookies
-	function get_data($_idpost = null) {
+	function get_data($_idpost = null, $_listing = null) {
 
 		if (isset($_POST['addposttobcs'])) {
 			$_idbc = $_POST['addposttobcs'];

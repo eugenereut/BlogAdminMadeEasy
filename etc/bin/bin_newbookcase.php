@@ -16,7 +16,7 @@ class Bin_Newbookcase extends Bin
 		$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
-	function get_data($_idbc = NULL) {
+	function get_data($_idbc = null, $_listing = null) {
 		if (isset($_POST['Submitbookcase'])) {
 			$message = $this->insert_newBookcase($_POST['bookcase'], $_POST['aboutbookcase']);
 		} elseif (isset($_POST['Submitshelve'])) {

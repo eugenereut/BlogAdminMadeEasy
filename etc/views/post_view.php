@@ -1,6 +1,6 @@
 <article>
 <header>
-<h2>Блог</h2>
+<h3>Блог</h3>
 </header>
 <section>
 <header>
@@ -14,12 +14,10 @@
 </div>
 </section>
 <div class="postnav">
-<div>
-<a class="prev" href="/post?idpt=<?php if (!empty($data['NextPost'])) {echo $data['NextPost'][1];} ?>">
-<h3>Следующий пост</h3>
-<span><?php if (!empty($data['NextPost'])) {echo $data['NextPost'][0];} ?></span>
-</a>
-</div>
+  <a class="prev" href="/post?idpt=<?php if (!empty($data['NextPost'])) {echo $data['NextPost'][1];} ?>">
+  <h3>Следующий блог</h3>
+  <span><?php if (!empty($data['NextPost'])) {echo $data['NextPost'][0];} ?></span>
+  </a>
 </div>
 </article>
 <footer>

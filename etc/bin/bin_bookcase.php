@@ -17,18 +17,18 @@ class Bin_Bookcase extends Bin
 	}
 
 	# Model show all posts added only to bookcase, if no post there then get posts from shelves
-	function get_data($_idbc = NULL) {
+	function get_data($_idbc = null, $_listing = null) {
 		# this cookie needs for left menu
 		$cookie_name = 'idbc';
 		$cookie_value = $_idbc;
 		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
 
 		$_topshelves_menu = $this->get_topshelves_menu($_idbc, $_idsh = null);
-		$_postinbookcase = $this->get_postinbookcase($_idbc);
+		$_postinbookcase = $this->get_postinbookcase($_idbc, $_listing);
 		return array_merge($_topshelves_menu, $_postinbookcase);
 	}
 
-	private function get_postinbookcase($_idbc) {
+	private function get_postinbookcase($_idbc, $_listing) {
 		$arr_posts = array(); $_all_posts = array(); $i = 0;
 
 		$_stmt = $this->_dba->prepare('SELECT idpt FROM postinbookcase WHERE idbc = :idbc ORDER BY datepost DESC');
@@ -45,7 +45,7 @@ class Bin_Bookcase extends Bin
 			# this array for the right modal window where all posts names
 			$_all_posts[$i] = array('PostID' => $_bookcase['idpt'], 'PostName' => $_posts[1]);
 
-			$i++;
+			++$i;
 		}
 
 		$_bcstmt = $this->_dba->prepare('SELECT namebookcase FROM bookcase WHERE idbc = :idbc');
@@ -54,7 +54,11 @@ class Bin_Bookcase extends Bin
 		$_nbc = $_bcstmt->fetch(PDO::FETCH_ASSOC);
 		$_nbc = $_nbc['namebookcase'];
 
-		return array('Posts' => $arr_posts, 'All_inmodal_window' => $_all_posts, 'BookcaseName' => $_nbc);
+		$_all_posts = array('All_inmodal_window' => $_all_posts, 'BookcaseName' => $_nbc);
+
+		$arr_posts = $this->pagination_posts($i, $arr_posts, $_idbc, $_listing);
+
+		return array_merge($arr_posts, $_all_posts);
 	}
 
 	private function get_posts($_idpt) {
@@ -83,13 +87,36 @@ class Bin_Bookcase extends Bin
 
 		$j = rand(3, 5);
 
-		for ($i=0; $i < $j; $i++) {
+		for ($i=0; $i < $j; ++$i) {
 			if (isset($routes[$i])) {
 				$_postbody .= $routes[$i];
 			}
 		}
 
 		return $_postbody;
+	}
+
+	private function pagination_posts($_i, $arr_posts, $_idbc, $_listing) {
+		if ($_i > 0) {
+			$_arr_posts_short = array_chunk($arr_posts, 7);
+			# how much pages in array with 7 elements
+			$_pages = count($_arr_posts_short);
+
+			# check what comes from controller
+			if ($_listing > $_pages) {
+				$_listing = 1;
+			} elseif ($_listing <= 0) {
+				$_listing = 1;
+			}
+
+			$arr_posts = $_arr_posts_short[$_listing - 1];
+		} else {
+			$_listing = 1;  $_pages = 1;
+		}
+
+    $page_active = array('active_page' => $_listing, 'entries' => $_i, 'iDbc' => $_idbc, 'pages' => $_pages, 'Posts' => $arr_posts);
+
+		return $page_active;
 	}
 
 	# functions get added names bookcases and shelves for under post menu

@@ -17,7 +17,7 @@ class Bin_Shelve extends Bin
 	}
 
 	# Model show all posts added only to bookcase, if no post there then get posts from shelves
-	function get_data($_idsh = NULL) {
+	function get_data($_idsh = null, $_listing = null) {
 		$_topshelves_menu = $this->get_topshelves_menu($_idbc = null, $_idsh);
 		$_postonshelve = $this->get_postonshelve($_idsh);
 		return array_merge($_topshelves_menu, $_postonshelve);

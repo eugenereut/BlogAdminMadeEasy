@@ -16,7 +16,7 @@ class Bin_Post extends Bin
 		$this->_dba = $this->db_access();
 	}
 
-	function get_data($_idpt = NULL) {
+	function get_data($_idpt = null, $_listing = null) {
 		return $this->get_post($_idpt);
 	}
 

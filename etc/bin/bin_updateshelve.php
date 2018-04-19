@@ -16,7 +16,7 @@ class Bin_Updateshelve extends Bin
 		$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
-	function get_data($_idsh = NULL) {
+	function get_data($_idsh = null, $_listing = null) {
 		if (isset($_POST['Updateshelve'])) {
 			$message = $this->update_shelve($_POST['selectbookcase'], $_POST['shelve'], $_idsh);
 		} elseif (isset($_POST['Deleteshelve'])) {

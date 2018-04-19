@@ -106,7 +106,7 @@ section div.formpostbody {font-family: 'Playfair Display', serif; font-size:16px
 section div.formpostbody{width:100%}}
 small.smallbookcase{font-size: 14px; font-weight:700}
 small.smallbookcase a{color:rgba(0,0,0,.5)}
-small.smallshelve{font-size: 12px;}
+small.smallshelve{font-size: 13px;}
 small.smallshelve a{color:rgba(0,0,0,.5)}
 
 @media(min-width:900px){section.third>div:first-child{width:33.3333%;margin-right:40px}section.third>div:last-child{width:66.6666%}}

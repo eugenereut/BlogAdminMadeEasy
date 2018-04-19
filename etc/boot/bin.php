@@ -9,7 +9,7 @@
 */
 class Bin
 {
-	public function get_data($_idbc = NULL) {
+	public function get_data($_idbc = null, $_listing = null) {
 
 	}
 

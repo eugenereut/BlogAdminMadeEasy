@@ -16,7 +16,7 @@ class Bin_Updatebookcase extends Bin
 		$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 
-	function get_data($_idbc = NULL) {
+	function get_data($_idbc = null, $_listing = null) {
 		if (isset($_POST['Updatebookcase'])) {
 			$message = $this->update_bookcase($_POST['bookcase'], $_POST['aboutbookcase'], $_idbc);
 		} elseif (isset($_POST['Deletebookcase'])) {
