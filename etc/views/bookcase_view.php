@@ -1,3 +1,25 @@
+<script>
+function getpostin_modalwindow(name, id) {
+  var responseData = "", xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+    {
+          var responseData = eval(this.responseText);
+           document.getElementById("wrapped_html").innerHTML = responseData[0];
+          //console.log(responseData[0]);
+    }
+  };
+
+  sendpost(xhttp, name, id);
+}
+
+function sendpost(xhttp, name, id) {
+  xhttp.open("POST", "bookcase", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("iDBookcase=" + name + "&iDPage=" + id);
+}
+</script>
 <article>
 <header>
 <?php
@@ -26,11 +48,11 @@ if (!empty($data['Posts'])) {
     </div>
     </section>';
   }
-} ?>
-<?php
-  if (!empty($data['pages'])) {
+}
+if (!empty($data['pages'])) {
     echo '<div class="pagination">';
-    $_limit_less = $data['active_page'] - 4; $_limit_more = $data['active_page'] + 4; $_next_less = 1; $_next_more = 1; $_btngroup = null;
+    $_limit_less = $data['active_page'] - 4; $_limit_more = $data['active_page'] + 4;
+    $_next_less = 1; $_next_more = 1; $_btngroup = null;
 
     for ($i = 1; $i <= $data['pages']; $i++) {
       if ($data['active_page'] == $i) {
@@ -89,22 +111,10 @@ if (!empty($data['Posts'])) {
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-  <span class="close">&times;</span>
-    <h2><?php if (!empty($data['BookcaseName'])){echo $data['BookcaseName'];}?> · Все тексты</h2>
-    <?php
-    if (!empty($data['All_inmodal_window'])) {
-      foreach ($data['All_inmodal_window'] as $value) {
-        echo '<p><a href="/post?idpt='.$value['PostID'].'">' . $value['PostName'] . '</a></p>';
-      }
-    } ?>
-    <br>
-    <div class="pagination">
-      <span class="prev">« Туда</span>
-      <span class="currentpg">1</span>
-      <a href="">2</a>
-      <a href="">3</a>
-      <a href="" class="next">Сюда »</a>
-    </div>
+    <span class="close">&times;</span>
+    <span id="wrapped_html">
+      <?php if (!empty($data['wrapped_html'])){echo $data['wrapped_html'];}?>
+    </span>
   </div>
 </div>
 <script>

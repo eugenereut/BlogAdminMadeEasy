@@ -7,9 +7,10 @@ class Run_Bookcase extends Run
 	}
 
 	function action_index() {
-		$_idbc = $_GET['idbc'];
-
 		$default_page = 1;
+
+		$_idbc = isset($_GET['idbc']) ? $_GET['idbc'] : $default_page;
+		$_idbc = number_format(abs($_idbc));
 
 		$_page = isset($_GET['next']) ? $_GET['next'] : $default_page;
 		$_page = number_format(abs($_page));
