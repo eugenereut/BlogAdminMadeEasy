@@ -49,6 +49,7 @@ if (!empty($data['Posts'])) {
     </section>';
   }
 }
+
 if (!empty($data['pages'])) {
     echo '<div class="pagination">';
     $_limit_less = $data['active_page'] - 4; $_limit_more = $data['active_page'] + 4;

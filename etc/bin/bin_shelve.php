@@ -55,7 +55,7 @@ class Bin_Shelve extends Bin
 			++$i;
 		}
 
-		# $_size_arr = 7;
+		# $_size_arr = 7, if changed here go to shelve_view.php and change there
 		$arr_posts = $this->pagination_posts($i, $arr_posts, $_idsh, $_listing, 7);
 
 		return $arr_posts;
@@ -120,7 +120,7 @@ class Bin_Shelve extends Bin
 		$_nsh = $_shstmt->fetch(PDO::FETCH_ASSOC);
 		$_nsh = $_nsh['nameshelve'];
 
-		# $_size_arr = 14 for modal window;
+		# $_size_arr = 14 for modal window, if changed here go to function wrap_to_htmlstr and change there
 		$arr_posts = $this->pagination_posts($i, $_all_posts, $_idsh, $_listing, 14);
 
 		$arr_posts = array('modal_window' => $arr_posts, 'ShelveName' => $_nsh);
@@ -187,7 +187,7 @@ class Bin_Shelve extends Bin
         }
       }
 
-      # 14 defined in Bin_Bookcase function  modalwindow_posts
+      # 14 defined in Bin_Shelve function modalwindow_posts
       if ($arr_posts['modal_window']['entries'] <= 14 ) {
          $_entries = $arr_posts['modal_window']['entries'];
          $_entriesfrom = 1;

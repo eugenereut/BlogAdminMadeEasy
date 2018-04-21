@@ -72,7 +72,7 @@ if (!empty($data['pages'])) {
     }
   }
 
-  # 7 defined in Bin_Bookcase function pagination_posts
+  # 7 defined in Bin_Shelve function pagination_posts
   if ($data['entries'] <= 7 ) {
      $_entries = $data['entries'];
      $_entriesfrom = 1;

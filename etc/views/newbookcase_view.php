@@ -7,7 +7,7 @@
   } ?>
 </header>
 <section class="third">
-<div><h2>New Bookcase</h2><br>all bookcases go to the left menu</div>
+<div><h2>New Bookcase</h2><br><small class="smallshelve">all bookcases go to the left menu</small></div>
   <div class="newbookcases">
   <form action="" method="post">
     <div class="selectwrap">
@@ -21,7 +21,7 @@
 </div>
 </section>
 <section class="third">
-  <div><h2>New Shelves</h2><br>all shelves go to the top menu</div>
+  <div><h2>New Shelves</h2><br><small class="smallshelve">all shelves go to the top menu</small></div>
   <div class="newbookcases">
     <form action="" method="post">
       <div class="selectwrap">
@@ -50,7 +50,7 @@ if (!empty($data['bookcase'])) {
   foreach ($data['bookcase'] as $value) {
     echo '<section class="third">
     <div><h2><a href="/updatebookcase?idbc='.$value['Record'].'">' . $value['NameBookcase'] . '</a></h2>
-    <br>' . $value['AboutBC'] . '</div>
+    <br><small>' . $value['AboutBC'] . '</small></div>
     <div class="listbookcases"><ul class="shelvenav">' . $value['Shelve'] . '</ul></div>
     </section>';
   }

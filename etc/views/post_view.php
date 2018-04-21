@@ -1,6 +1,6 @@
 <article>
 <header>
-<h3>Блог</h3>
+<h2>Блог</h2>
 </header>
 <section>
 <header>
@@ -15,7 +15,7 @@
 </section>
 <div class="postnav">
   <a class="prev" href="/post?idpt=<?php if (!empty($data['NextPost'])) {echo $data['NextPost'][1];} ?>">
-  <h3>Следующий блог</h3>
+  <h3>Следующий пост</h3>
   <span><?php if (!empty($data['NextPost'])) {echo $data['NextPost'][0];} ?></span>
   </a>
 </div>

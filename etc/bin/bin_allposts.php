@@ -18,10 +18,10 @@ class Bin_Allposts extends Bin
 
 
 	function get_data($_idpt = null, $_listing = null) {
-		return $this->get_post();
+		return $this->get_post($_listing);
 	}
 
-	private function get_post() {
+	private function get_post($_listing) {
 		$arr_posts = array(); $i = 0;
 
 		$monthes = array(1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь', 7 => 'Июль',
@@ -40,11 +40,37 @@ class Bin_Allposts extends Bin
 			$i++;
 		}
 
-		return array('Allposts' => $arr_posts);
+		# $_size_arr = 14, if changed here go to allposts_view.php and change there
+		$arr_posts = $this->pagination_posts($i, $arr_posts, $_listing, 14);
+
+		return $arr_posts;
+	}
+
+	private function pagination_posts($_i, $arr_posts, $_listing, $_size_arr) {
+		if ($_i > 0) {
+			$_arr_posts_short = array_chunk($arr_posts, $_size_arr);
+			# how much elements with $_size_arr
+			$_pages = count($_arr_posts_short);
+
+			# check what comes from controller
+			if ($_listing > $_pages) {
+				$_listing = 1;
+			} elseif ($_listing <= 0) {
+				$_listing = 1;
+			}
+
+			$arr_posts = $_arr_posts_short[$_listing - 1];
+		} else {
+			$_listing = 1;  $_pages = 1;
+		}
+
+    $page_active = array('active_page' => $_listing, 'entries' => $_i, 'pages' => $_pages, 'Posts' => $arr_posts);
+
+		return $page_active;
 	}
 
 	function get_title($_id) {
-		$_menu =$this->get_left_menu($_id);
+		$_menu =$this->get_left_menu($_id = null);
 		$_title = array('title' => 'Тексты и Книги · Священник Яков Кротов');
 		return array_merge($_title, $_menu);
 	}

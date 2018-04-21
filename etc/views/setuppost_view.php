@@ -79,7 +79,10 @@
 </script>
 <article>
 <header>
-<h2>Add Post into Bookcases and Shelves. Edit or delete post.</h2>
+	<ul class="themas">
+	  <li><h2>Add Post to Bookcases and Shelves.</h2></li><li> | </li><li><a href="/allposts"><span>back</span></a></li>
+	</ul>
+<h3>Edit or delete post.</h3>
 <?php
   if (!empty($data['houston'])) {
     echo '<p style="color: red">'.$data['houston'].'</p>';
@@ -93,9 +96,9 @@
 <div id="attachedbookcases"><?php if (!empty($data['PostBcSh'])) {echo $data['PostBcSh'];} ?></div>
 <br><br>
 <div>
-	<p><a href="/post?idpt='. <?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?> . '" class="readmore">Edit</a></p>
+	<p><a href="/setuppost/editpost?idpt=<?php echo $data['iDPost']; ?>" class="readmore">Edit</a></p>
 	<p>&mdash;&nbsp;or&nbsp;&mdash;</p>
-	<p><a href="/post?idpt='. <?php if (!empty($data['PostDate'])) {echo $data['PostDate'];} ?> . '" class="readmore">Delete Post</a></p>
+	<p><a href="/setuppost/deletepost?idpt=<?php echo $data['iDPost']; ?>" class="readmore">Delete Post</a></p>
 </div>
 </header>
 <div class="postbody">Bookcases and Shelves<br><br>

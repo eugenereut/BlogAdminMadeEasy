@@ -60,7 +60,7 @@ class Bin_Bookcase extends Bin
 			++$i;
 		}
 
-		# $_size_arr = 7;
+		# $_size_arr = 7, if changed here go to bookcase_view.php and change there
 		$arr_posts = $this->pagination_posts($i, $arr_posts, $_idbc, $_listing, 7);
 
 		return $arr_posts;
@@ -125,7 +125,7 @@ class Bin_Bookcase extends Bin
 		$_nbc = $_bcstmt->fetch(PDO::FETCH_ASSOC);
 		$_nbc = $_nbc['namebookcase'];
 
-		# $_size_arr = 14 for modal window;
+		# $_size_arr = 14 for modal window, if changed here go to function wrap_to_htmlstr and change there
 		$arr_posts = $this->pagination_posts($i, $_all_posts, $_idbc, $_listing, 14);
 
 		$arr_posts = array('modal_window' => $arr_posts, 'BookcaseName' => $_nbc);
@@ -172,7 +172,7 @@ class Bin_Bookcase extends Bin
       $_htmlstr .= '<br><div class="pagination">';
 
       $_limit_less = $arr_posts['modal_window']['active_page'] - 4;
-			$_limit_more = $arr_posts['modal_window']['active_page'] + 4; 
+			$_limit_more = $arr_posts['modal_window']['active_page'] + 4;
 			$_next_less = 1; $_next_more = 1; $_btngroup = null;
 
       for ($i = 1; $i <= $arr_posts['modal_window']['pages']; $i++) {
@@ -193,7 +193,7 @@ class Bin_Bookcase extends Bin
         }
       }
 
-      # 14 defined in Bin_Bookcase function  modalwindow_posts
+      # 14 defined in Bin_Bookcase function modalwindow_posts
       if ($arr_posts['modal_window']['entries'] <= 14 ) {
          $_entries = $arr_posts['modal_window']['entries'];
          $_entriesfrom = 1;

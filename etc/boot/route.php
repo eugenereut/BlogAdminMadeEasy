@@ -17,6 +17,10 @@ class Route
 			$run_name = $routes[1];
 		}
 
+		if (!empty($routes[2])) {
+			$action_name = $routes[2];
+		}
+		
 		unset($routes);
 		# add prefix
 		$bin_name = strtok('Bin_'.$run_name, '?');
