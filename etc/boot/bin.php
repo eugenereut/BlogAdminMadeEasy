@@ -28,9 +28,19 @@ class Bin
 	function get_left_menu($_id = null) {
 		$_i = 0; $_arr = array();
 
+		# new defined in run_newpost.php
+		if ($_id == 'new') {
+			$_menustr = '<a href="/newblogs" class="active"><span>Новое</span></a>';
+		} else {
+				$_menustr = '<a href="/newblogs"><span>Новое</span></a>';
+		}
+
+		$_arr[0] = array('menustr' => $_menustr);
+
 		$statement = $this->_dba->query('SELECT idbc, namebookcase FROM bookcase');
 		$data = $statement->fetchAll();
 		foreach($data as $row) {
+			++$_i;
       $_idbc = $row['idbc'];
       $_NameBC = $row['namebookcase'];
 			if ($_idbc == $_id) {
@@ -40,7 +50,6 @@ class Bin
 			}
 
 			$_arr[$_i] = array('menustr' => $_menustr);
- 			$_i++;
  		}
 
  	 	return array('leftmenu' => $_arr);

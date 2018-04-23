@@ -343,7 +343,7 @@ class Bin_Setuppost extends Bin
 		return $str_shelves;
 	}
 
-	# this functions for Edit, or Delete Post from website
+	# Edit Post
 	function edit_post($_idpost) {
 		if (isset($_POST['Editpost'])) {
 			$message = $this->update_post($_POST['iDPost'], $_POST['Datefrom'], $_POST['Headerpost'], $_POST['Bodypost']);
@@ -505,6 +505,9 @@ class Bin_Setuppost extends Bin
 
 		return $message;
 	}
+
+	# Delete Post from website unlink($file_one);
+	
 
 	function get_title() {
 		$_menu =$this->get_left_menu();

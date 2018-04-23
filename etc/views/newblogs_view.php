@@ -1,5 +1,5 @@
 <script>
-function getpostin_modalwindow(name, id) {
+function getpostin_modalwindow(id) {
   var responseData = "", xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function() {
@@ -11,28 +11,18 @@ function getpostin_modalwindow(name, id) {
     }
   };
 
-  sendpost(xhttp, name, id);
+  sendpost(xhttp, id);
 }
 
-function sendpost(xhttp, name, id) {
-  xhttp.open("POST", "shelve", true);
+function sendpost(xhttp, id) {
+  xhttp.open("POST", "newblogs", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("iDShelve=" + name + "&iDPage=" + id);
+  xhttp.send("iDPage=" + id);
 }
 </script>
 <article>
 <header>
-<?php
-if (!empty($data['ShelvesMenu'])) {
-  echo '<ul class="themas">';
-  foreach ($data['ShelvesMenu'] as $value) {
-    echo $value['SrtSh'];
-  }
-  echo '<li class="alltexts-btn"> | <a id="myBtn">все тексты</a></li></ul>';
-}
-
-if (!empty($data['Aboutbookcase'])) {echo "<em>" . $data['Aboutbookcase'] ."</em>";}
-?>
+  <ul class="themas"><li><h2>Новое в Блоге</h2></li><li class="alltexts-btn"> | <a id="myBtn">все тексты</a></li></ul>
 </header>
 <?php
 if (!empty($data['Posts'])) {
@@ -49,61 +39,62 @@ if (!empty($data['Posts'])) {
     </section>';
   }
 }
+
 if (!empty($data['pages'])) {
-  echo '<div class="pagination">';
-  $_limit_less = $data['active_page'] - 4; $_limit_more = $data['active_page'] + 4;
-  $_next_less = 1; $_next_more = 1; $_btngroup = null;
+    echo '<div class="pagination">';
+    $_limit_less = $data['active_page'] - 4; $_limit_more = $data['active_page'] + 4;
+    $_next_less = 1; $_next_more = 1; $_btngroup = null;
 
-  for ($i = 1; $i <= $data['pages']; $i++) {
-    if ($data['active_page'] == $i) {
-      $_activepage = '<span class="currentpg">'. $i .'</span>';
-      $_next_less = $i - 1;
-      $_next_more = $i + 1;
-    } else {
-      $_activepage = null;
-    }
-
-    if ($i > $_limit_less and $i < $_limit_more) {
-      if ($_activepage) {
-        $_btngroup .= $_activepage;
+    for ($i = 1; $i <= $data['pages']; $i++) {
+      if ($data['active_page'] == $i) {
+        $_activepage = '<span class="currentpg">'. $i .'</span>';
+        $_next_less = $i - 1;
+        $_next_more = $i + 1;
       } else {
-        $_btngroup .= '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$i.'">'.$i.'</a>' ."\r\n";
+        $_activepage = null;
+      }
+
+      if ($i > $_limit_less and $i < $_limit_more) {
+        if ($_activepage) {
+          $_btngroup .= $_activepage;
+        } else {
+          $_btngroup .= '<a href="/newblogs?next='.$i.'">'.$i.'</a>' ."\r\n";
+        }
       }
     }
-  }
 
-  # 7 defined in Bin_Shelve function pagination_posts
-  if ($data['entries'] <= 7 ) {
-     $_entries = $data['entries'];
-     $_entriesfrom = 1;
-     $_entriesto = $data['entries'];
-  } else {
-     $_entriesto = $data['active_page'] * 7;
-     $_entries = $data['entries'];
-     $_entriesfrom = $_entriesto - 6;
-  }
+    # 7 defined in Bin_Bookcase function pagination_posts
+    if ($data['entries'] <= 7 ) {
+       $_entries = $data['entries'];
+       $_entriesfrom = 1;
+       $_entriesto = $data['entries'];
+    } else {
+       $_entriesto = $data['active_page'] * 7;
+       $_entries = $data['entries'];
+       $_entriesfrom = $_entriesto - 6;
+    }
 
-  if ($_entriesto > $_entries) {
-     $_entriesto = $_entries;
-  }
+    if ($_entriesto > $_entries) {
+       $_entriesto = $_entries;
+    }
 
-  if ($_next_less < 1) {
-    echo '<span class="prev">« Сюда</span>';
-  }
-  else {
-    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_less.'" class="next">« Сюда</a>';
-  }
+    if ($_next_less < 1) {
+      echo '<span class="prev">« Сюда</span>';
+    }
+    else {
+      echo '<a href="/newblogs?next='.$_next_less.'" class="next">« Сюда</a>';
+    }
 
-  echo $_btngroup;
+    echo $_btngroup;
 
-  if ($_next_more <= $data['pages']) {
-    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_more.'" class="next">Туда »</a>';
+    if ($_next_more <= $data['pages']) {
+      echo '<a href="/newblogs?next='.$_next_more.'" class="next">Туда »</a>';
+    }
+    else {
+      echo '<span class="prev">Туда »</span>';
+    }
+    echo '</div><small class="smallshelve">Блоги&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';
   }
-  else {
-    echo '<span class="prev">Туда »</span>';
-  }
-  echo '</div><small class="smallshelve">Блоги&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';
-}
 ?>
 </article>
 <!-- services Modal window -->

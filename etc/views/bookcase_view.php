@@ -28,7 +28,7 @@ if (!empty($data['ShelvesMenu'])) {
   foreach ($data['ShelvesMenu'] as $value) {
     echo $value['SrtSh'];
   }
-  echo '<li> | <a id="myBtn">все тексты</a></li></ul>';
+  echo '<li class="alltexts-btn"> | <a id="myBtn">все тексты</a></li></ul>';
 }
 
 if (!empty($data['Aboutbookcase'])) {echo "<em>" . $data['Aboutbookcase'] . "</em>";}
@@ -89,19 +89,19 @@ if (!empty($data['pages'])) {
     }
 
     if ($_next_less < 1) {
-      echo '<span class="prev">« Туда</span>';
+      echo '<span class="prev">« Сюда</span>';
     }
     else {
-      echo '<a href="/bookcase?idbc='.$data['iDbc'].'&next='.$_next_less.'" class="next">« Туда</a>';
+      echo '<a href="/bookcase?idbc='.$data['iDbc'].'&next='.$_next_less.'" class="next">« Сюда</a>';
     }
 
     echo $_btngroup;
 
     if ($_next_more <= $data['pages']) {
-      echo '<a href="/bookcase?idbc='.$data['iDbc'].'&next='.$_next_more.'" class="next">Сюда »</a>';
+      echo '<a href="/bookcase?idbc='.$data['iDbc'].'&next='.$_next_more.'" class="next">Туда »</a>';
     }
     else {
-      echo '<span class="prev">Сюда »</span>';
+      echo '<span class="prev">Туда »</span>';
     }
     echo '</div><small class="smallshelve">Блоги&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';
   }

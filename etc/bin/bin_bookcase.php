@@ -209,19 +209,19 @@ class Bin_Bookcase extends Bin
       }
 
       if ($_next_less < 1) {
-        $_htmlstr .= '<span class="prev">« Туда</span>';
+        $_htmlstr .= '<span class="prev">« Сюда</span>';
       }
       else {
-        $_htmlstr .= '<a name="'.$arr_posts['modal_window']['iDbc'].'" id="'.$_next_less.'" onclick="getpostin_modalwindow(this.name, this.id)" class="next">« Туда</a>';
+        $_htmlstr .= '<a name="'.$arr_posts['modal_window']['iDbc'].'" id="'.$_next_less.'" onclick="getpostin_modalwindow(this.name, this.id)" class="next">« Сюда</a>';
       }
 
       $_htmlstr .= $_btngroup;
 
       if ($_next_more <= $arr_posts['modal_window']['pages']) {
-        $_htmlstr .= '<a name="'.$arr_posts['modal_window']['iDbc'].'" id="'.$_next_more.'" onclick="getpostin_modalwindow(this.name, this.id)" class="next">Сюда »</a>';
+        $_htmlstr .= '<a name="'.$arr_posts['modal_window']['iDbc'].'" id="'.$_next_more.'" onclick="getpostin_modalwindow(this.name, this.id)" class="next">Туда »</a>';
       }
       else {
-        $_htmlstr .= '<span class="prev">Сюда »</span>';
+        $_htmlstr .= '<span class="prev">Туда »</span>';
       }
 
       $_htmlstr .= '</div><small class="smallshelve">Блоги&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';

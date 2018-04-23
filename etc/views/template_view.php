@@ -5,7 +5,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo $title['title']; ?></title>
-	<!-- link href="/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" -->
 	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="/common/images/favicons/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/common/images/favicons/apple-touch-icon-72x72.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/common/images/favicons/apple-touch-icon-114x114.png">
@@ -18,7 +17,7 @@
 	<link rel="stylesheet" href="/common/css/screen.css" type="text/css">
 	<link rel="stylesheet" type="text/css" href="/common/css/pickmeup-white.css">
 	<!-- Custom Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400i" rel="stylesheet">
 </head>
 <body>
 	<header>
