@@ -44,10 +44,6 @@ class Bin_Setuppost extends Bin
 		}
 
 		# this cookie needs for JavaScript, see Setuppost_view, when post goes to bookcase or on shelves, see Run_Setuppost controller
-		$cookie_name = 'idpost';
-		$cookie_value = $_idpost;
-		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-
 		if(!isset($_COOKIE['idpost'])) {
     	$message = array('houston' => 'Cookie is not set! Please allow cookies in browser settings.');
 			$content = array_merge($message, $this->get_bookcases($_idpost));
@@ -63,26 +59,29 @@ class Bin_Setuppost extends Bin
 
 		$stmt = $this->_dba->prepare('SELECT datepost, postname FROM postcase WHERE idpt = :idpt');
 		$stmt->execute([':idpt' => $_idpt]);
-		$row_postcase = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		# this cookie needs when post goes to bookcase or on shelves
-		$cookie_name = 'datepost';
-		$cookie_value = $row_postcase['datepost'];
-		setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+		if ($row_postcase = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			# this cookie needs when post goes to bookcase or on shelves
+			$cookie_name = 'datepost';
+			$cookie_value = $row_postcase['datepost'];
+			setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
 
-		$monthes = array(1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь', 7 => 'Июль',
-							8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь');
+			$monthes = array(1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь', 7 => 'Июль',
+								8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь');
 
-		$_year = date('Y', strtotime($row_postcase['datepost']));
-		$_mnth = abs(date('m', strtotime($row_postcase['datepost'])));
-		$_day = date('d', strtotime($row_postcase['datepost']));
+			$_year = date('Y', strtotime($row_postcase['datepost']));
+			$_mnth = abs(date('m', strtotime($row_postcase['datepost'])));
+			$_day = date('d', strtotime($row_postcase['datepost']));
 
-		$_postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
-		$_bc_names = $this->get_addedname_bookcases($_idpt);
-		$_sh_names = $this->get_addedname_shelves($_idpt);
-		$_sort_eachother = $this->sortshelves_tobookcases($_bc_names, $_sh_names);
+			$_postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
+			$_bc_names = $this->get_addedname_bookcases($_idpt);
+			$_sh_names = $this->get_addedname_shelves($_idpt);
+			$_sort_eachother = $this->sortshelves_tobookcases($_bc_names, $_sh_names);
 
-		return array('PostDate' => $_postdate, 'PostName' => $row_postcase['postname'], 'PostBcSh' => $_sort_eachother, 'iDPost' => $_idpt);
+			return array('PostDate' => $_postdate, 'PostName' => $row_postcase['postname'], 'PostBcSh' => $_sort_eachother, 'iDPost' => $_idpt);
+		} else {
+			return array('PostDate' =>null, 'PostName' => null, 'PostBcSh' => null, 'iDPost' => null);
+		}
 	}
 
 	# this functions get added names bookcases and shelves under post name and date
@@ -506,8 +505,71 @@ class Bin_Setuppost extends Bin
 		return $message;
 	}
 
-	# Delete Post from website unlink($file_one);
-	
+	# Delete Post from website
+	function delete_post($_idpost) {
+		if (isset($_POST['DeletePost'])) {
+			if (isset($_POST['agreetodelete']) != 'Yes') {
+				$message = 'You have to agree to delete post.';
+			} else {
+				$message = $this->delete_frompostcase($_POST['iDPost']);
+			}
+		} else {
+			$message = null;
+		}
+
+		$content = $this->get_post($_idpost);
+		$message = array('houston' => $message);
+
+		return array_merge($content, $message);
+	}
+
+	private function delete_frompostcase($_iDPost) {
+		$stmt_one = $this->_dba->query('SELECT filepath FROM postcase WHERE idpt = :idpt ');
+		$stmt_one->execute([':idpt' => $_iDPost]);
+
+		if ($row_postcase = $stmt_one->fetch(PDO::FETCH_ASSOC)) {
+			# this row goes to unlink($_filepath);
+			$_filepath = $row_postcase['filepath'];
+
+			try {
+				$this->_dba->beginTransaction();
+
+				$statement = $this->_dba->query('DELETE FROM postcase WHERE idpt = :idpt');
+				$statement->execute([':idpt' => $_iDPost]);
+
+				// update all date in bookcases
+				$stmt_two = $this->_dba->query('SELECT postinbookcase_id FROM postinbookcase WHERE idpt = :idpt ');
+				$stmt_two->execute([':idpt' => $_iDPost]);
+
+				while($row_post = $stmt_two->fetch(PDO::FETCH_ASSOC)) {
+					$stmt = $this->_dba->prepare('DELETE FROM postinbookcase WHERE postinbookcase_id = :ptbc');
+					$stmt->execute([':ptbc' => $row_post['postinbookcase_id']]);
+				}
+
+				// update all date in shelves
+				$stmt_tree = $this->_dba->query('SELECT postonshelve_id FROM postonshelve WHERE idpt = :idpt ');
+				$stmt_tree->execute([':idpt' => $_iDPost]);
+
+				while($row_post = $stmt_tree->fetch(PDO::FETCH_ASSOC)) {
+					$stmt = $this->_dba->prepare('DELETE FROM postonshelve WHERE postonshelve_id = :ptsh');
+					$stmt->execute([':ptsh' => $row_post['postonshelve_id']]);
+				}
+
+				# commit the transaction
+				$this->_dba->commit();
+				unlink($_filepath);
+				$message = 'Post ' . $_filepath . ' deleted.';
+
+			} catch (PDOException $e) {
+				$this->_dba->rollBack();
+				$_exception = 'Post not deleted , some error exception happened. ' . $e->getMessage();
+			}
+		} else {
+			$message = 'Post deleted.';
+		}
+
+		return $message;
+	}
 
 	function get_title() {
 		$_menu =$this->get_left_menu();

@@ -150,7 +150,7 @@ div.newbookcases div.inputwrap{display:flex;background-color:#edf0f3;padding:56p
 div.newbookcases input[type=text]{background-color:transparent;border:0;padding:0 0 10px;border-bottom:1px solid rgba(0,0,0,.25);
   font-family:fakt,Helvetica,Arial,sans-serif;font-size:17px;width:100%;color:#1e90ff;margin-right:20px}
 div.newbookcases input[type=text]:focus{outline:0;border-bottom:1px solid #1e90ff}
-div.newbookcases input[type=submit]{-webkit-appearance:none;display:block;background-color:#1e90ff;border:0;color:#fff;border-radius:3px;padding:5px 10px 2px;font-family:fakt,Helvetica,Arial,sans-serif;font-size:14px}
+div.newbookcases input[type=submit]{-webkit-appearance:none;display:block;background-color:#1e90ff;border:0;color:#fff;border-radius:3px;padding:5px 10px 5px;font-family:fakt,Helvetica,Arial,sans-serif;font-size:14px}
 div.newbookcases input[type=submit]:active{position:relative;top:2px}
 div.newbookcases div.selectwrap{display:flex;background-color:#edf0f3;padding:56px 30px 0px}
 div.newbookcases select{background-color:transparent;border:0;padding:0 0 10px; font-family:fakt,Helvetica,Arial,sans-serif;font-size:17px;width:100%;color:#1e90ff;margin-right:20px}
@@ -167,6 +167,10 @@ ul.shelvenav li:not(:last-child){margin-right:25px}
 ul.shelvenav li a{color:#222}
 ul.shelvenav li a:hover{text-decoration:none;border-bottom:2px solid rgba(0,0,0,.25)}
 ul.shelvenav li.active a{border-bottom:2px solid #1e90ff}
+
+div.deletepost div.deletewrap{background-color:#edf0f3;padding:36px 30px 36px}
+div.deletepost input[type=submit]{-webkit-appearance:none;display:block;background-color:#d41c1c;border:0;color:#fff;border-radius:3px;padding:5px 10px 5px;font-family:fakt,Helvetica,Arial,sans-serif;font-size:14px}
+div.deletepost div.deletewrap label{display:block;color:#1e90ff;margin:40px 0 20px;}
 
 div.opening{
   display:flex;
