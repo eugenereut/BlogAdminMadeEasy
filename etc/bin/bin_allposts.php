@@ -37,7 +37,7 @@ class Bin_Allposts extends Bin
 			$postdate = $monthes[$_mnth] . ' ' . $_day . ', ' .  $_year;
 
 			$arr_posts[$i] = array('Record' => $row_postcase['idpt'], 'PostDate' => $postdate, 'PostName' => $row_postcase['postname']);
-			$i++;
+			++$i;
 		}
 
 		# $_size_arr = 14, if changed here go to allposts_view.php and change there

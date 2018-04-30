@@ -59,10 +59,12 @@ class Bin_Updatebookcase extends Bin
 	private function delete_bookcase($_agreetodelete, $_idbc) {
 		if (isset($_agreetodelete) && $_agreetodelete == 'Yes') {
 			try {
+				$this->_dba->exec('PRAGMA foreign_keys = ON;');
+				
 				$this->_dba->beginTransaction();
 
-				//$stmt = $this->_dba->prepare('UPDATE bookcase SET namebookcase = :nbc, aboutbookcase = :abc WHERE idbc = :idbc');
-				//$stmt->execute(array(':nbc' => $_bookcase, ':abc' => $_aboutbookcase, ':idbc' => $_idbc));
+				$statement = $this->_dba->query('DELETE FROM bookcase WHERE idbc = :idbc');
+				$statement->execute([':idbc' => $_idbc]);
 
 				# commit the transaction
 				$this->_dba->commit();

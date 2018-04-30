@@ -46,24 +46,27 @@ class Bin_Post extends Bin
 	}
 
 	private function get_nextpost($_idpt) {
+		$arr_posts = array(); $i = 0;
 
-		$_stmt_lastpost = $this->_dba->query('SELECT idpt FROM postcase ORDER BY idpt DESC');
-		$_idpt_last = $_stmt_lastpost->fetch(PDO::FETCH_ASSOC);
-
-		if ($_idpt < $_idpt_last['idpt']) {
-			++$_idpt;
-		} else {
-			$_idpt = 1;
+		$_stmt = $this->_dba->query('SELECT idpt, postname FROM postcase');
+		while($row_postcase = $_stmt->fetch(PDO::FETCH_ASSOC)) {
+			$arr_posts[$i] = array($row_postcase['idpt'], $row_postcase['postname']);
+			++$i;
 		}
 
-		$stmt = $this->_dba->prepare('SELECT postname FROM postcase WHERE idpt = :idpt');
-		$stmt->execute([':idpt' => $_idpt]);
+		$_pages = count($arr_posts);
 
-		if($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$_netxpost = $_idpt;
-			$_postname = $row['postname'];
-		} else {
-			$_netxpost = $this->get_nextpost($_idpt);
+		for ($i=0; $i < $_pages; $i++) {
+			if ($_idpt == $arr_posts[$i][0]) {
+				$j = ++$i;
+				if ($j == $_pages) {
+					$_netxpost = $arr_posts[0][0];
+					$_postname = $arr_posts[0][1];
+				} else {
+					$_netxpost = $arr_posts[$j][0];
+					$_postname = $arr_posts[$j][1];
+				}
+			}
 		}
 
 		return array($_postname, $_netxpost);

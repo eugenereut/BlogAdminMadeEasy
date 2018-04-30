@@ -57,10 +57,12 @@ class Bin_Updateshelve extends Bin
 	private function delete_shelve($_agreetodelete, $_idsh) {
 		if (isset($_agreetodelete) && $_agreetodelete == 'Yes') {
 			try {
+				$this->_dba->exec('PRAGMA foreign_keys = ON;');
+
 				$this->_dba->beginTransaction();
 
-				//$stmt = $this->_dba->prepare('UPDATE bookcase SET namebookcase = :nbc, aboutbookcase = :abc WHERE idbc = :idbc');
-				//$stmt->execute(array(':nbc' => $_bookcase, ':abc' => $_aboutbookcase, ':idbc' => $_idsh));
+				$statement = $this->_dba->query('DELETE FROM shelves WHERE idsh = :idsh');
+				$statement->execute([':idsh' => $_idsh]);
 
 				# commit the transaction
 				$this->_dba->commit();
@@ -92,7 +94,7 @@ class Bin_Updateshelve extends Bin
 	}
 
 	private function select_bookcases($_idsh) {
-		$_Option = null;
+		$_Option = null; $_OptionActive = null;
 
 		$stmt = $this->_dba->prepare('SELECT idbc FROM shelves WHERE idsh = :idsh');
 		$stmt->execute([':idsh' => $_idsh]);
