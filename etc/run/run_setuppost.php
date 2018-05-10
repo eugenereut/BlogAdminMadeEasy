@@ -7,7 +7,7 @@ class Run_Setuppost extends Run
 	}
 
 	function action_index() {
-		if ($_GET['idpt']) {
+		if (isset($_GET['idpt'])) {
 			$_idpost = $_GET['idpt'];
 
 			$cookie_name = 'idpost';
