@@ -1,3 +1,3 @@
 <div class="opening">
-  <div class="intro-text">БОГОЧЕЛОВЕЧЕСКАЯ <span class="text-intro">КОМЕДИЯ</span></div>
+  <div class="intro-text">Blog Admin <span class="text-intro">Made Easy</span></div>
 </div>

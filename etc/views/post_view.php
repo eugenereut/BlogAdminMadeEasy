@@ -1,6 +1,6 @@
 <article>
 <header>
-<h2>Блог</h2>
+<h2>Blog</h2>
 </header>
 <section>
 <header>
@@ -15,11 +15,11 @@
 </section>
 <div class="postnav">
   <a class="prev" href="/post?idpt=<?php if (!empty($data['NextPost'])) {echo $data['NextPost'][1];} ?>">
-  <h3>Следующий текст</h3>
+  <h3>Next post</h3>
   <span><?php if (!empty($data['NextPost'])) {echo $data['NextPost'][0];} ?></span>
   </a>
 </div>
 </article>
 <footer>
-<div>© Авторские права 2010—2018, Священник Яков Кротов</div>
+<div>© Copyright <?php echo date('Y');?>, Blog Admin Made Easy</div>
 </footer>

@@ -15,7 +15,7 @@
     <div class="deletewrap">
       <div style="padding: 15px 0 5px">
         <h3 style="color: #d41c1c">
-          <?php	if (!empty($data['PostName'])) { echo "Блог будет полностью удален с вебсайта!";} else { echo "Блог удален с вебсайта!"; }?>
+          <?php	if (!empty($data['PostName'])) { echo "Blog will be completely removed from the website!";} else { echo "Blog removed from the website!"; }?>
         </h3></div>
        <div style="padding: 15px 0 5px"><?php	if (!empty($data['PostName'])) { echo $data['PostName'];} ?></div>
        <time><?php	if (!empty($data['PostDate'])) { echo $data['PostDate'];} else { echo date('D M d Y'); }?></time>
@@ -30,5 +30,5 @@
 </section>
 </article><br><br>
 <footer>
-  <div>© Авторские права 2010—2018, Священник Яков Кротов</div>
+  <div>© Copyright <?php echo date('Y');?>, Blog Admin Made Easy</div>
 </footer>

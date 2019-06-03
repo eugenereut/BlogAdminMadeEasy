@@ -43,7 +43,7 @@
           if ($_activepage) {
             $_btngroup .= $_activepage;
           } else {
-            $_btngroup .= '<a href="/allposts?next='.$i.'">'.$i.'</a>' ."\r\n";
+            $_btngroup .= '<a href="/allposts?next='.$i.'">'.$i.'</a>' . "\r\n";
           }
         }
       }
@@ -64,24 +64,24 @@
       }
 
       if ($_next_less < 1) {
-        echo '<span class="prev">« меньше</span>';
+        echo '<span class="prev">« less</span>';
       }
       else {
-        echo '<a href="/allposts?next='.$_next_less.'" class="next">« меньше</a>';
+        echo '<a href="/allposts?next='.$_next_less.'" class="next">« less</a>';
       }
 
       echo $_btngroup;
 
       if ($_next_more <= $data['pages']) {
-        echo '<a href="/allposts?next='.$_next_more.'" class="next">больше »</a>';
+        echo '<a href="/allposts?next='.$_next_more.'" class="next">more »</a>';
       }
       else {
-        echo '<span class="prev">больше »</span>';
+        echo '<span class="prev">more »</span>';
       }
-      echo '</div><small class="smallshelve">Посты&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';
+      echo '</div><small class="smallshelve">Posts&nbsp;' . $_entriesfrom . '&nbsp;and&nbsp;' . $_entriesto . ',&nbsp;from&nbsp;' . $_entries . '</small>';
     }
   ?>
 </article>
 <footer>
-<div>© Авторские права 2010—2018, Священник Яков Кротов</div>
+<div>© Copyright <?php echo date('Y');?>, Blog Admin Made Easy</div>
 </footer>

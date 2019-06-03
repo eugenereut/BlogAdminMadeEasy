@@ -9,91 +9,92 @@
 */
 class Bin_Updatebookcase extends Bin
 {
-	public $_dba;
+		public $_dba;
 
-	function __construct() {
-		$this->_dba = $this->db_access();
-		$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	}
-
-	function get_data($_idbc = null, $_listing = null) {
-		if (isset($_POST['Updatebookcase'])) {
-			$message = $this->update_bookcase($_POST['bookcase'], $_POST['aboutbookcase'], $_idbc);
-		} elseif (isset($_POST['Deletebookcase'])) {
-			$message = $this->delete_bookcase(isset($_POST['agreetodelete']), $_idbc);
-		} else {
-			$message = null;
+		function __construct() {
+				$this->_dba = $this->db_access();
+				$this->_dba->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 
-		$content = $this->get_bookcase($_idbc);
-		$message = array('houston' => $message);
-
-		return array_merge($content, $message);
-	}
-
-	private function update_bookcase($_bookcase, $_aboutbookcase, $_idbc) {
-		if (!empty($_bookcase)) {
-			try {
-				$this->_dba->beginTransaction();
-
-				$stmt = $this->_dba->prepare('UPDATE bookcase SET namebookcase = :nbc, aboutbookcase = :abc WHERE idbc = :idbc');
-				$stmt->execute(array(':nbc' => $_bookcase, ':abc' => $_aboutbookcase, ':idbc' => $_idbc));
-
-				# commit the transaction
-				$this->_dba->commit();
-				if (!empty($_aboutbookcase)) {
-					$_aboutbookcase = ' / ' . $_aboutbookcase;
+		function get_data($_idbc = null, $_listing = null) {
+				if (isset($_POST['Updatebookcase'])) {
+						$message = $this->update_bookcase($_POST['bookcase'], $_POST['aboutbookcase'], $_idbc);
+				} elseif (isset($_POST['Deletebookcase'])) {
+						$message = $this->delete_bookcase(isset($_POST['agreetodelete']), $_idbc);
+				} else {
+						$message = null;
 				}
-				$message = 'Bookcase "' . $_bookcase . ' ' . $_aboutbookcase . '" updated';
-			} catch (PDOException $e) {
-				$this->_dba->rollBack();
-				$message = 'Bookcase not updated, some error exception happened. ' . $e->getMessage();
-			}
-		} else {
-			$message = null;
+
+				$content = $this->get_bookcase($_idbc);
+				$message = array('houston' => $message);
+
+				return array_merge($content, $message);
 		}
 
-		return $message;
-	}
+		private function update_bookcase($_bookcase, $_aboutbookcase, $_idbc) {
+				if (!empty($_bookcase)) {
+						try {
+								$this->_dba->beginTransaction();
 
-	private function delete_bookcase($_agreetodelete, $_idbc) {
-		if (isset($_agreetodelete) && $_agreetodelete == 'Yes') {
-			try {
-				$this->_dba->exec('PRAGMA foreign_keys = ON;');
-				
-				$this->_dba->beginTransaction();
+								$stmt = $this->_dba->prepare('UPDATE bookcase SET namebookcase = :nbc, aboutbookcase = :abc WHERE idbc = :idbc');
+								$stmt->execute(array(':nbc' => $_bookcase, ':abc' => $_aboutbookcase, ':idbc' => $_idbc));
 
-				$statement = $this->_dba->query('DELETE FROM bookcase WHERE idbc = :idbc');
-				$statement->execute([':idbc' => $_idbc]);
+								# commit the transaction
+								$this->_dba->commit();
 
-				# commit the transaction
-				$this->_dba->commit();
+								if (!empty($_aboutbookcase)) {
+										$_aboutbookcase = ' / ' . $_aboutbookcase;
+								}
 
-				$message = 'Bookcase deleted';
-			} catch (PDOException $e) {
-				$this->_dba->rollBack();
-				$message = 'Bookcase not deleted, some error exception happened. ' . $e->getMessage();
-			}
-		} else {
-			$message = 'Sorry, can be deleted only if you do agree to delete.';
+								$message = 'Bookcase "' . $_bookcase . ' ' . $_aboutbookcase . '" updated';
+						} catch (PDOException $e) {
+								$this->_dba->rollBack();
+								$message = 'Bookcase not updated, some error exception happened. ' . $e->getMessage();
+						}
+				} else {
+						$message = null;
+				}
+
+				return $message;
 		}
 
-		return $message;
-	}
+		private function delete_bookcase($_agreetodelete, $_idbc) {
+				if (isset($_agreetodelete) && $_agreetodelete == 'Yes') {
+						try {
+								$this->_dba->exec('PRAGMA foreign_keys = ON;');
 
-	private function get_bookcase($_idbc) {
+								$this->_dba->beginTransaction();
 
-		$stmt = $this->_dba->prepare('SELECT namebookcase, aboutbookcase FROM bookcase WHERE idbc = :idbc');
-		$stmt->execute([':idbc' => $_idbc]);
-		$row_bookcase = $stmt->fetch(PDO::FETCH_ASSOC);
+								$statement = $this->_dba->query('DELETE FROM bookcase WHERE idbc = :idbc');
+								$statement->execute([':idbc' => $_idbc]);
 
-		return array('NameBookcase' => $row_bookcase['namebookcase'], 'AboutBC' => $row_bookcase['aboutbookcase']);
-	}
+								# commit the transaction
+								$this->_dba->commit();
 
-	function get_title() {
-		$_menu =$this->get_left_menu();
-		$_title = array('title' => 'Тексты и Книги · Священник Яков Кротов');
-		return array_merge($_title, $_menu);
-	}
+								$message = 'Bookcase deleted';
+						} catch (PDOException $e) {
+								$this->_dba->rollBack();
+								$message = 'Bookcase not deleted, some error exception happened. ' . $e->getMessage();
+						}
+				} else {
+						$message = 'Sorry, can be deleted only if you do agree to delete.';
+				}
 
+				return $message;
+		}
+
+		private function get_bookcase($_idbc) {
+				$stmt = $this->_dba->prepare('SELECT namebookcase, aboutbookcase FROM bookcase WHERE idbc = :idbc');
+				$stmt->execute([':idbc' => $_idbc]);
+				$row_bookcase = $stmt->fetch(PDO::FETCH_ASSOC);
+
+				return array('NameBookcase' => $row_bookcase['namebookcase'], 'AboutBC' => $row_bookcase['aboutbookcase']);
+		}
+
+		function get_title() {
+				$_menu =$this->get_left_menu();
+				$_title = array('title' => 'Blog Admin · Made Easy');
+
+				return array_merge($_title, $_menu);
+		}
 }

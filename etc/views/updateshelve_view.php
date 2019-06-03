@@ -37,5 +37,5 @@
 
 </article><br><br>
 <footer>
-  <div>© Авторские права 2010—2018, Священник Яков Кротов</div>
+  <div>© Copyright <?php echo date('Y');?>, Blog Admin Made Easy</div>
 </footer>

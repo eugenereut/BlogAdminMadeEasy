@@ -21,7 +21,7 @@
 </head>
 <body>
 	<header>
-	<a href="/" class="logo">СЯК<span>тексты и книги</span></a>
+	<a href="/" class="logo">Blog Admin<span>Made Easy</span></a>
 	<nav role="main">
 		<?php
 		if (!empty($title['leftmenu'])) {
@@ -30,10 +30,10 @@
 			}
 		} ?>
 	<br>
-	<!-- span style="color: #ccc;">Указатели:</span>
-	<a href=""><span>предметный</span></a>
-	<a href=""><span>именной</span></a>
-	<a href=""><span>географический</span></a -->
+	<!-- span style="color: #ccc;">index:</span>
+	<a href=""><span>subjects</span></a>
+	<a href=""><span>names</span></a>
+	<a href=""><span>location</span></a -->
 	<br>
 	<a href="/writing"><span>[+] add post</span></a>
 	<a href="/allposts"><span>all blog posts</span></a>

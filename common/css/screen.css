@@ -65,6 +65,7 @@ article>header p{font-family:fakt,Helvetica,Arial,sans-serif}
 article>header a{color:#222}
 article>header ul.themas li{display:inline-block; margin-right:15px;}
 article>header ul.themas li.alltexts-btn{float: right;}
+article>header span.aboutbookcase{font-family: 'Old Standard TT', serif}
 
 ul.subnav{border-bottom:1px solid rgba(0,0,0,.1);padding-bottom:18px;margin-bottom:40px;margin-top:-20px}
 ul.subnav li{display:inline-block}

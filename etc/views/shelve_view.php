@@ -28,10 +28,10 @@ if (!empty($data['ShelvesMenu'])) {
   foreach ($data['ShelvesMenu'] as $value) {
     echo $value['SrtSh'];
   }
-  echo '<li class="alltexts-btn"> | <a id="myBtn">все тексты</a></li></ul>';
+  echo '<li class="alltexts-btn"> | <a id="myBtn">all posts</a></li></ul>';
 }
 
-if (!empty($data['Aboutbookcase'])) {echo "<em>" . $data['Aboutbookcase'] ."</em>";}
+if (!empty($data['Aboutbookcase'])) {echo '<span class="aboutbookcase"><em>' . $data['Aboutbookcase'] . '</em></span>';}
 ?>
 </header>
 <?php
@@ -44,7 +44,7 @@ if (!empty($data['Posts'])) {
     <br><br>
     <div id="attachedbookcases">' . $value['PostBcSh'] . '</div>
     </header>
-    <div class="postbody">' . $value['PostBody'] . '<p><a href="/post?idpt='.$value['PostID'].'" class="readmore">Читать дальше…</a></p>
+    <div class="postbody">' . $value['PostBody'] . '<p><a href="/post?idpt='.$value['PostID'].'" class="readmore">read more…</a></p>
     </div>
     </section>';
   }
@@ -88,21 +88,21 @@ if (!empty($data['pages'])) {
   }
 
   if ($_next_less < 1) {
-    echo '<span class="prev">« Сюда</span>';
+    echo '<span class="prev">« here</span>';
   }
   else {
-    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_less.'" class="next">« Сюда</a>';
+    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_less.'" class="next">« here</a>';
   }
 
   echo $_btngroup;
 
   if ($_next_more <= $data['pages']) {
-    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_more.'" class="next">Туда »</a>';
+    echo '<a href="/shelve?idsh='.$data['iDsh'].'&next='.$_next_more.'" class="next">there »</a>';
   }
   else {
-    echo '<span class="prev">Туда »</span>';
+    echo '<span class="prev">there »</span>';
   }
-  echo '</div><small class="smallshelve">Блоги&nbsp;' . $_entriesfrom . '&nbsp;и&nbsp;' . $_entriesto . ',&nbsp;из&nbsp;' . $_entries . '</small>';
+  echo '</div><small class="smallshelve">Posts&nbsp;' . $_entriesfrom . '&nbsp;and&nbsp;' . $_entriesto . ',&nbsp;from&nbsp;' . $_entries . '</small>';
 }
 ?>
 </article>
@@ -145,5 +145,5 @@ if (event.target == modal) {
 }
 </script>
 <footer>
-<div>© Авторские права 2010—2018, Священник Яков Кротов</div>
+<div>© Copyright <?php echo date('Y');?>, Blog Admin Made Easy</div>
 </footer>
